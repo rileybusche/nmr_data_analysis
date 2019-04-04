@@ -7,9 +7,10 @@ import argparse
 
 # Command Line Arguments
 parser = argparse.ArgumentParser(description='Options.')
-parser.add_argument('--path', help='Full Path to folder contianing files', required=True)
+parser.add_argument('--path', help='Full Path to folder contianing files.', required=True)
 parser.add_argument('--freq', metavar='N', type=float, nargs='+',
                     help='frequency(s)', required=True)
+parser.add_argument('--output', help='Output CSV filename.', required=False)
 
 args = vars(parser.parse_args())
 
@@ -25,7 +26,6 @@ for frequency in args['freq']:
 # frequencies.append(3.1225)
 
 outputs = {}
-trial_number = 1
 
 for file_number in range(1, len(files) + 1):
 
@@ -52,18 +52,22 @@ for file_number in range(1, len(files) + 1):
             # Build List
             intensity_list.append(float(line))
 
+    # Array of indecies for input frequencies
     indices = fl.calculateIndexs(left_bound, right_bound, size, frequencies)
 
+    # Builds Dict {frequency : Intensity}
     frequency_intensity_dict = fl.findIntensities(intensity_list, indices, frequencies)
 
     outputs[file_number] = frequency_intensity_dict
 
-    print(file_number, frequency_intensity_dict)
+    # print(file_number, frequency_intensity_dict)
 
 # trial = 1
 # for inner_dict in outputs:
 #     peaks_dict = outputs.get(inner_dict)
 #     print(trial, peaks_dict)
+    
 #     trial += 1
 
+fl.create_csv(args['output'], outputs)
 

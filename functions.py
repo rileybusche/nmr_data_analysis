@@ -1,5 +1,6 @@
 # Riley Busche 2019
 # File containing functions used in main.py
+import csv
 
 def calculateIndexs(left_bound, right_bound, size, frequencies):
     indices = []
@@ -38,3 +39,21 @@ def findPeak(intestity_list, index):
             search = False
 
     return abs(peak_intensity)
+
+# Creates CSV file
+def create_csv(file_name, values):
+
+    with open(file_name, mode='w') as output_file:
+        output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        print(values)
+        output_file.writerow(['Trial', ''])
+        output_file.writerow(['Run' , 'Frequency', 'Intensity'])
+
+        run = 1
+        for item in values:
+            print(item)
+            peak_dict = values.get(item)
+            for key in peak_dict:
+                output_file.writerow([run, key, peak_dict.get(key)])
+            run += 1
+            
