@@ -15,7 +15,7 @@ args = vars(parser.parse_args())
 
 # Path will be parameter from user
 # path = "/Users/rileybusche/Research/LVR_DIFFUSION_pH10.10_Trial_1/*.txt"
-files = glob.glob(args["path"])
+files = glob.glob(args["path"] + "/*[0-99].txt")
 
 # User inputed
 frequencies = []
@@ -27,9 +27,9 @@ for frequency in args['freq']:
 outputs = {}
 trial_number = 1
 
-for name in files:
+for file_number in range(1, len(files) + 1):
 
-    file_object = open(name, "r")
+    file_object = open(args["path"] + "/" + str(file_number) + ".txt", "r")
 
     # Parsing for LEFT and RIGHT and SIZE of spectrum
     for line in file_object:
@@ -56,13 +56,14 @@ for name in files:
 
     frequency_intensity_dict = fl.findIntensities(intensity_list, indices, frequencies)
 
-    outputs[trial_number] = frequency_intensity_dict
-    trial_number += 1
+    outputs[file_number] = frequency_intensity_dict
 
+    print(file_number, frequency_intensity_dict)
 
-for inner_dict in outputs:
-    peaks_dict = outputs.get(inner_dict)
-    print(peaks_dict)
+# trial = 1
+# for inner_dict in outputs:
+#     peaks_dict = outputs.get(inner_dict)
+#     print(trial, peaks_dict)
+#     trial += 1
 
-print(len(files))
 
