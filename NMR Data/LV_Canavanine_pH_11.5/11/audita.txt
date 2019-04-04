@@ -1,0 +1,23 @@
+##TITLE= Audit trail, TOPSPIN		Version 3.2
+##JCAMPDX= 5.01
+##ORIGIN= Bruker BioSpin GmbH
+##OWNER= nmr
+$$ C:/Bruker/TopSpin3.2/data/nmr/nmr/LV_Canavanine_pH_11.5/11/audita.txt
+##AUDIT TRAIL=  $$ (NUMBER, WHEN, WHO, WHERE, PROCESS, VERSION, WHAT)
+(   1,<2019-03-16 18:50:24.995 -0500>,<nmr>,<CZC45205WH>,<go>,<TOPSPIN 3.2>,
+      <created by zg
+	started at 2019-03-16 17:42:58.769 -0500,
+	POWCHK enabled, PULCHK disabled,
+       configuration hash MD5:
+       06 3D 44 17 A6 4A 42 5A 29 7A 0B D1 33 37 7F 7D
+       data hash MD5: 64K * 18
+       47 07 A6 DD EB 4C 2B 0B 5A D3 39 FA 24 33 72 C7>)
+(   2,<2019-03-16 18:50:25.385 -0500>,<nmr>,<CZC45205WH>,<audit>,<TOPSPIN 3.2>,
+      <user comment:
+       ICON-NMR User ID: nmr
+       data hash MD5: 64K * 18
+       47 07 A6 DD EB 4C 2B 0B 5A D3 39 FA 24 33 72 C7>)
+##END=
+
+$$ hash MD5
+$$ 33 C1 5E 52 59 76 FD 46 49 45 6C EF 10 F3 1E B3

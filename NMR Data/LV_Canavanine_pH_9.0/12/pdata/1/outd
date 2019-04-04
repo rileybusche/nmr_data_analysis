@@ -1,0 +1,16 @@
+##TITLE= Parameter file, TOPSPIN		Version 3.2
+##JCAMPDX= 5.0
+##DATATYPE= Parameter Values
+##NPOINTS= 1	$$ modification sequence number
+##ORIGIN= Bruker BioSpin GmbH
+##OWNER= nmr
+$$ 2019-03-16 01:40:20.510 -0500  nmr@CZC45205WH
+$$ C:/Bruker/TopSpin3.2/data/nmr/nmr/LV_Canavanine_pH_9.0/12/pdata/1/outd
+$$ process C:\Bruker\TopSpin3.2\prog\mod\xwish3.exe
+##$CURPLOT= <PDF reDirect v2>
+##$CURPRIN= <$PDF reDirect v2>
+##$DFORMAT= <normdp>
+##$LAYOUT= <+/1D_H.xwp>
+##$LFORMAT= <normlp>
+##$PFORMAT= <normpl>
+##END=
