@@ -8,6 +8,8 @@ import argparse
 # Command Line Arguments
 parser = argparse.ArgumentParser(description='Options.')
 parser.add_argument('--path', help='Full Path to folder contianing files', required=True)
+parser.add_argument('--freq', metavar='N', type=float, nargs='+',
+                    help='frequency(s)', required=True)
 
 args = vars(parser.parse_args())
 
@@ -17,8 +19,10 @@ files = glob.glob(args["path"])
 
 # User inputed
 frequencies = []
-frequencies.append(-.1202)
-frequencies.append(3.1225)
+for frequency in args['freq']:
+    frequencies.append(frequency)
+# frequencies.append(-.1202)
+# frequencies.append(3.1225)
 
 outputs = {}
 trial_number = 1

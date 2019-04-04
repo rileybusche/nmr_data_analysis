@@ -19,3 +19,5 @@ for frequency in args['freq']:
         frequencies.append(frequency)
 
 print(frequencies)
+
+print(type(frequencies[1]))
