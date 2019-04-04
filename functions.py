@@ -45,15 +45,15 @@ def create_csv(file_name, values):
 
     with open(file_name, mode='w') as output_file:
         output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        print(values)
         output_file.writerow(['Trial', ''])
-        output_file.writerow(['Run' , 'Frequency', 'Intensity'])
 
         run = 1
         for item in values:
-            print(item)
+            output_file.writerow(['Run', run])
+            output_file.writerow(['Frequency', 'Intensity'])
             peak_dict = values.get(item)
             for key in peak_dict:
-                output_file.writerow([run, key, peak_dict.get(key)])
+                output_file.writerow([key, peak_dict.get(key)])
             run += 1
+            output_file.writerow([''])
             
