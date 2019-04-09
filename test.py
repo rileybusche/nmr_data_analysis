@@ -13,17 +13,23 @@ path = args['path']
 
 number_of_trials = glob.glob(path + "/*")
 
-print(len(number_of_trials))
-for trial_number in range(1,len(number_of_trials) + 1):
-        trial_path = glob.glob(path + "/" + "Trial_" + str(trial_number) + "/*[0-99].txt")
-        print(len(trial_path))
-        for file_number in range(1, len(trial_path) + 1):
-                #file_path = path + "/" + "Trail_" + str(trial_number) + "/" + str(file_number) + ".txt"
-                
-                print(file_path)
+print(number_of_trials)
 
-                file_name = open(file_path, "r")
-                print(file_name)
+for trial_path in number_of_trials:
+        path = trial_path
+        print(trial_path)
+
+# print(len(number_of_trials))
+# for trial_number in range(1,len(number_of_trials) + 1):
+#         trial_path = glob.glob(path + "/" + "Trial_" + str(trial_number) + "/*[0-99].txt")
+#         print(len(trial_path))
+#         for file_number in range(1, len(trial_path) + 1):
+#                 #file_path = path + "/" + "Trail_" + str(trial_number) + "/" + str(file_number) + ".txt"
+                
+#                 print(file_path)
+
+#                 file_name = open(file_path, "r")
+#                 print(file_name)
 
 
 # frequencies = []

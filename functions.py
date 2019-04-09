@@ -41,11 +41,12 @@ def findPeak(intestity_list, index):
     return abs(peak_intensity)
 
 # Creates CSV file
-def create_csv(file_name, values):
+def create_csv(file_name, values, trial_number):
+    file_name += str(trial_number) + ".csv"
 
     with open(file_name, mode='w') as output_file:
         output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        output_file.writerow(['Trial', ''])
+        output_file.writerow(['Trial', trial_number])
         output_file.writerow([''])
 
         run = 1

@@ -16,7 +16,7 @@ args = vars(parser.parse_args())
 
 # Path will be parameter from user
 # path = "/Users/rileybusche/Research/LVR_DIFFUSION_pH10.10_Trial_1/*.txt"
-files = glob.glob(args["path"] + "/*[0-99].txt")
+trials = glob.glob(args["path"] + "/*")
 
 # User inputed
 frequencies = []
@@ -25,40 +25,47 @@ for frequency in args['freq']:
 
 outputs = {}
 
-for file_number in range(1, len(files) + 1):
+trial_number = 1
 
-    file_object = open(args["path"] + "/" + str(file_number) + ".txt", "r")
+for trial_path in trials:
 
-    # Parsing for LEFT and RIGHT and SIZE of spectrum
-    for line in file_object:
-        if line.find("LEFT") != -1:
-            tokens = line.split()
-            left_bound = float(tokens[3])
-            right_bound = float(tokens[7])
-        elif line.find("SIZE") != -1:
-            tokens = line.split()
-            size = int(tokens[3])-1
-            break
+    files = glob.glob(trial_path + "/*[0-99].txt")
+    print(trial_path)
+    for file_number in range(1, len(files) + 1):
 
-    step_size = (left_bound+abs(right_bound))/size
+        file_object = open(trial_path + "/" + str(file_number) + ".txt", "r")
 
-    # Build list of INTENSITIES
-    intensity_list = []
+        # Parsing for LEFT and RIGHT and SIZE of spectrum
+        for line in file_object:
+            if line.find("LEFT") != -1:
+                tokens = line.split()
+                left_bound = float(tokens[3])
+                right_bound = float(tokens[7])
+            elif line.find("SIZE") != -1:
+                tokens = line.split()
+                size = int(tokens[3])-1
+                break
 
-    for line in file_object:
-        if line.find("#") == -1:
-            # Build List
-            intensity_list.append(float(line))
+        step_size = (left_bound+abs(right_bound))/size
 
-    # Array of indecies for input frequencies
-    indices = fl.calculateIndexs(left_bound, right_bound, size, frequencies)
+        # Build list of INTENSITIES
+        intensity_list = []
 
-    # Builds Dict {frequency : Intensity}
-    frequency_intensity_dict = fl.findIntensities(intensity_list, indices, frequencies)
+        for line in file_object:
+            if line.find("#") == -1:
+                # Build List
+                intensity_list.append(float(line))
 
-    outputs[file_number] = frequency_intensity_dict
+        # Array of indecies for input frequencies
+        indices = fl.calculateIndexs(left_bound, right_bound, size, frequencies)
 
-    # print(file_number, frequency_intensity_dict)
+        # Builds Dict {frequency : Intensity}
+        frequency_intensity_dict = fl.findIntensities(intensity_list, indices, frequencies)
 
-fl.create_csv(args['output'], outputs)
+        outputs[file_number] = frequency_intensity_dict
+
+        # print(file_number, frequency_intensity_dict)
+
+    fl.create_csv(args['output'], outputs, trial_number)
+    trial_number += 1
 
