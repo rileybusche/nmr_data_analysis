@@ -1,17 +1,30 @@
 import argparse
 import glob
 
-# parser = argparse.ArgumentParser(description='Options.')
+parser = argparse.ArgumentParser(description='Options.')
 # parser.add_argument('--freq', metavar='N', type=float, nargs='+',
 #                     help='frequency(s)', required=True)
-# parser.add_argument('--path')
+parser.add_argument('--path')
 
-# args = vars(parser.parse_args())
+args = vars(parser.parse_args())
 
-# folder = glob.glob(args['path'] + '/*')
+#--path "/Users/rileybusche/research_test/ph_10"
+path = args['path']
 
-# for trials in folder:
-#         print(trials)
+number_of_trials = glob.glob(path + "/*")
+
+print(len(number_of_trials))
+for trial_number in range(1,len(number_of_trials) + 1):
+        trial_path = glob.glob(path + "/" + "Trial_" + str(trial_number) + "/*[0-99].txt")
+        print(len(trial_path))
+        for file_number in range(1, len(trial_path) + 1):
+                #file_path = path + "/" + "Trail_" + str(trial_number) + "/" + str(file_number) + ".txt"
+                
+                print(file_path)
+
+                file_name = open(file_path, "r")
+                print(file_name)
+
 
 # frequencies = []
 
@@ -21,15 +34,3 @@ import glob
 # print(frequencies)
 
 # print(type(frequencies[1]))
-
-d1= {1: {-0.1202: 2578039.03125, 3.1225: 4778900.5} }
-
-for item in d1:
-        print(item)
-        peak_dict = d1.get(item)
-        value_list  = []
-        for key in peak_dict:
-                value = peak_dict.get(key)
-                value_list.append(value)
-
-print(value_list)

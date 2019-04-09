@@ -46,6 +46,7 @@ def create_csv(file_name, values):
     with open(file_name, mode='w') as output_file:
         output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         output_file.writerow(['Trial', ''])
+        output_file.writerow([''])
 
         run = 1
         for item in values:

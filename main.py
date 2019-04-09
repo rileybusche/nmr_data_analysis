@@ -10,7 +10,7 @@ parser = argparse.ArgumentParser(description='Options.')
 parser.add_argument('--path', help='Full Path to folder contianing files.', required=True)
 parser.add_argument('--freq', metavar='N', type=float, nargs='+',
                     help='frequency(s)', required=True)
-parser.add_argument('--output', help='Output CSV filename.', required=False)
+parser.add_argument('--output', help='Output CSV filename.', required=True)
 
 args = vars(parser.parse_args())
 
@@ -22,8 +22,6 @@ files = glob.glob(args["path"] + "/*[0-99].txt")
 frequencies = []
 for frequency in args['freq']:
     frequencies.append(frequency)
-# frequencies.append(-.1202)
-# frequencies.append(3.1225)
 
 outputs = {}
 
@@ -61,13 +59,6 @@ for file_number in range(1, len(files) + 1):
     outputs[file_number] = frequency_intensity_dict
 
     # print(file_number, frequency_intensity_dict)
-
-# trial = 1
-# for inner_dict in outputs:
-#     peaks_dict = outputs.get(inner_dict)
-#     print(trial, peaks_dict)
-    
-#     trial += 1
 
 fl.create_csv(args['output'], outputs)
 
