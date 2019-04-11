@@ -41,8 +41,9 @@ def findPeak(intestity_list, index):
 
     return abs(peak_intensity)
 
-def create_rawdata_csv(values, trial_number):
-    file_name = "raw_data" + str(trial_number) + ".csv"
+# Creates CSV of raw data
+def create_rawdata_csv(file_name, values, trial_number):
+    file_name += "_raw_data_" + str(trial_number) + ".csv"
     with open(file_name, mode='w') as output_file:
         
         output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -60,44 +61,31 @@ def create_rawdata_csv(values, trial_number):
                 output_file.writerow([key, peak_dict.get(key)])
             run += 1
             output_file.writerow([''])
-# Creates CSV file
+
+# Creates CSV with table of data, %G and ln(freq)
 def create_table_csv(file_name, values, trial_number):
-    file_name += str(trial_number) + ".csv"
+    file_name += "_" + str(trial_number) + ".csv"
 
     # Build Dictionary for Table
     table_dict = build_table_dictionary(values)
     # Build Frequencies
     field_names = build_field_names(table_dict)
+    print(field_names)
+    print(len(field_names))
+
+    list_dicts_in_table = []
+    
+    for number in table_dict:
+        list_dicts_in_table.append(table_dict[number])
 
     with open(file_name, mode='w') as output_file:
         # Build Fieldnames from dictionary keys
         writer = csv.DictWriter(output_file, fieldnames=field_names)
         writer.writeheader()
-        counter = 1
         # Prints out table
-        print(len(table_dict))
-        for kvp in table_dict:
-            #freq_inten in form of {-0.1202: 2578039.03125, 3.1225: 4778900.5}
-            freq_inten = table_dict[kvp]
-            writer.writerow(freq_inten)
-            counter += 1
         
-        # output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        # output_file.writerow([''])
-        # output_file.writerow([''])
-        # output_file.writerow([''])
-        # output_file.writerow(['Trial', trial_number])
-        # output_file.writerow([''])
-        # print(values)
-        # run = 1
-        # for item in values:
-        #     output_file.writerow(['Run', run])
-        #     output_file.writerow(['Frequency', 'Intensity'])
-        #     peak_dict = values.get(item)
-        #     for key in peak_dict:
-        #         output_file.writerow([key, peak_dict.get(key)])
-        #     run += 1
-        #     output_file.writerow([''])
+        for item in list_dicts_in_table:
+            writer.writerow(item)
 
 # Takes in values, adds ln() key and associated value to the dictionary
 def build_table_dictionary(d):
@@ -117,13 +105,17 @@ def build_table_dictionary(d):
             values = d[number]
             for index in range(len(values)):
                     values[key_list.pop()] = value_list.pop()
-            values["G"] = " "
+            values["G"] = " x "
     return d
 
 def build_field_names(table_dict):
     field_names = []
-    for key in table_dict:
-        values = table_dict[key]
-        for field_key in values:
-            field_names.append(field_key)
+    try:
+        dict_entry_for_names = table_dict.pop(1)
+    except:
+        print("ERROR : No data exists in dicitonary entry") 
+
+    for key in dict_entry_for_names:
+        field_names.append(key)
+
     return field_names

@@ -14,9 +14,11 @@ parser.add_argument('--output', help='Output CSV filename.', required=True)
 
 args = vars(parser.parse_args())
 
-# Path will be parameter from user
-# path = "/Users/rileybusche/Research/LVR_DIFFUSION_pH10.10_Trial_1/*.txt"
-trials = glob.glob(args["path"] + "/*")
+# Path is a user parameter
+try:
+    trials = glob.glob(args["path"] + "/*")
+except:
+    print("ERROR : Could not access files. Check path to folder and try again.")
 
 # User inputed
 frequencies = []
@@ -32,8 +34,10 @@ for trial_path in trials:
     files = glob.glob(trial_path + "/*[0-99].txt")
     print(trial_path)
     for file_number in range(1, len(files) + 1):
-
-        file_object = open(trial_path + "/" + str(file_number) + ".txt", "r")
+        try:
+            file_object = open(trial_path + "/" + str(file_number) + ".txt", "r")
+        except:
+            print("Error : Could not access files. Check if folder and naming structure is correct and try agian.")
 
         # Parsing for LEFT and RIGHT and SIZE of spectrum
         for line in file_object:
@@ -64,7 +68,7 @@ for trial_path in trials:
 
         outputs[file_number] = frequency_intensity_dict
 
-    fl.create_rawdata_csv(outputs, trial_number)
+    fl.create_rawdata_csv(args['output'], outputs, trial_number)
     fl.create_table_csv(args['output'], outputs, trial_number)
     trial_number += 1
 
