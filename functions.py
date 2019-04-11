@@ -1,6 +1,7 @@
 # Riley Busche 2019
 # File containing functions used in main.py
 import csv
+import math
 
 def calculateIndexs(left_bound, right_bound, size, frequencies):
     indices = []
@@ -41,11 +42,31 @@ def findPeak(intestity_list, index):
     return abs(peak_intensity)
 
 # Creates CSV file
-def create_csv(file_name, values, trial_number):
+def create_csv(file_name, values, trial_number, frequencies):
     file_name += str(trial_number) + ".csv"
 
+    # Build Dictionary for Table
+    table_dict = build_table_dictionary(values)
+    # Build Frequencies
+    field_names = build_field_names(table_dict)
+
     with open(file_name, mode='w') as output_file:
+        # Build Fieldnames from dictionary keys
+        writer = csv.DictWriter(output_file, fieldnames=field_names)
+        writer.writeheader()
+        
+        table_dict = build_table_dictionary(values)
+        
+        # Prints out table
+        for kvp in table_dict:
+            #freq_inten in form of {-0.1202: 2578039.03125, 3.1225: 4778900.5}
+            freq_inten = values[kvp]
+            writer.writerow(freq_inten)
+        
         output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        output_file.writerow([''])
+        output_file.writerow([''])
+        output_file.writerow([''])
         output_file.writerow(['Trial', trial_number])
         output_file.writerow([''])
 
@@ -58,4 +79,30 @@ def create_csv(file_name, values, trial_number):
                 output_file.writerow([key, peak_dict.get(key)])
             run += 1
             output_file.writerow([''])
+
+# Takes in values, adds ln() key and associated value to the dictionary
+def build_table_dictionary(d):
+    key_list = []
+    value_list = []
+
+    for number in d:
+            values = d[number]
             
+            for freq in values:
+                    key_list.append("ln(" + str(values[freq]) + ")")
+                    value_list.append(math.log(values[freq], math.e))
+    key_list.reverse()
+    value_list.reverse()
+
+    for number in d:
+            values = d[number]
+            for index in range(len(values)):
+                    values[key_list.pop()] = value_list.pop()
+            values["G"] = " "
+    return d
+
+def build_field_names(table_dict):
+    field_names = []
+    for key in table_dict:
+        field_names.append(key)
+    return field_names

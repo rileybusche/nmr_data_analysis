@@ -1,23 +1,24 @@
 import argparse
 import glob
+import math
 
-parser = argparse.ArgumentParser(description='Options.')
-# parser.add_argument('--freq', metavar='N', type=float, nargs='+',
-#                     help='frequency(s)', required=True)
-parser.add_argument('--path')
+# parser = argparse.ArgumentParser(description='Options.')
+# # parser.add_argument('--freq', metavar='N', type=float, nargs='+',
+# #                     help='frequency(s)', required=True)
+# parser.add_argument('--path')
 
-args = vars(parser.parse_args())
+# args = vars(parser.parse_args())
 
-#--path "/Users/rileybusche/research_test/ph_10"
-path = args['path']
+# #--path "/Users/rileybusche/research_test/ph_10"
+# path = args['path']
 
-number_of_trials = glob.glob(path + "/*")
+# number_of_trials = glob.glob(path + "/*")
 
-print(number_of_trials)
+# print(number_of_trials)
 
-for trial_path in number_of_trials:
-        path = trial_path
-        print(trial_path)
+# for trial_path in number_of_trials:
+#         path = trial_path
+#         print(trial_path)
 
 # print(len(number_of_trials))
 # for trial_number in range(1,len(number_of_trials) + 1):
@@ -40,3 +41,28 @@ for trial_path in number_of_trials:
 # print(frequencies)
 
 # print(type(frequencies[1]))
+
+d = {1 : {-0.1202: 2578039.03125, 3.1225: 4778900.5}, 2 : {-0.1202: 6078039.03125, 3.1225: 47998900.5}}
+
+key_list = []
+value_list = []
+
+for number in d:
+        values = d[number]
+        
+        for freq in values:
+                key_list.append("ln(" + str(values[freq]) + ")")
+                value_list.append(math.log(values[freq], math.e))
+
+key_list.reverse()
+value_list.reverse()
+
+for number in d:
+        values = d[number]
+        for index in range(len(values)):
+                values[key_list.pop()] = value_list.pop()
+        # Add %G here
+        values["G"] = " "
+
+for x in d:
+        print(d[x])
