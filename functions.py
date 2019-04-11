@@ -25,7 +25,7 @@ def findIntensities(intensity_list, indices, frequencies):
 
     return frequency_intensity_dict
 
-# Looks for peak closest to given intensity and return that intensity
+# Looks for peak closest to given intensity and return that intensity - "Search Algorithm"
 def findPeak(intestity_list, index):
     peak_intensity = 0.00
     # Check frequecny at intensity_list[index] vs intensity_list[index--] and intensity_list[index++], take higher value
@@ -41,8 +41,27 @@ def findPeak(intestity_list, index):
 
     return abs(peak_intensity)
 
+def create_rawdata_csv(values, trial_number):
+    file_name = "raw_data" + str(trial_number) + ".csv"
+    with open(file_name, mode='w') as output_file:
+        
+        output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        output_file.writerow([''])
+        output_file.writerow(['Trial', trial_number])
+        output_file.writerow([''])
+        
+        run = 1
+        for item in values:
+            output_file.writerow(['Run', run])
+            output_file.writerow(['Frequency', 'Intensity'])
+            peak_dict = values.get(item)
+            for key in peak_dict:
+                output_file.writerow([key, peak_dict.get(key)])
+            run += 1
+            output_file.writerow([''])
 # Creates CSV file
-def create_csv(file_name, values, trial_number, frequencies):
+def create_table_csv(file_name, values, trial_number):
     file_name += str(trial_number) + ".csv"
 
     # Build Dictionary for Table
@@ -54,31 +73,31 @@ def create_csv(file_name, values, trial_number, frequencies):
         # Build Fieldnames from dictionary keys
         writer = csv.DictWriter(output_file, fieldnames=field_names)
         writer.writeheader()
-        
-        table_dict = build_table_dictionary(values)
-        
+        counter = 1
         # Prints out table
+        print(len(table_dict))
         for kvp in table_dict:
             #freq_inten in form of {-0.1202: 2578039.03125, 3.1225: 4778900.5}
-            freq_inten = values[kvp]
+            freq_inten = table_dict[kvp]
             writer.writerow(freq_inten)
+            counter += 1
         
-        output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        output_file.writerow([''])
-        output_file.writerow([''])
-        output_file.writerow([''])
-        output_file.writerow(['Trial', trial_number])
-        output_file.writerow([''])
-
-        run = 1
-        for item in values:
-            output_file.writerow(['Run', run])
-            output_file.writerow(['Frequency', 'Intensity'])
-            peak_dict = values.get(item)
-            for key in peak_dict:
-                output_file.writerow([key, peak_dict.get(key)])
-            run += 1
-            output_file.writerow([''])
+        # output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        # output_file.writerow([''])
+        # output_file.writerow([''])
+        # output_file.writerow([''])
+        # output_file.writerow(['Trial', trial_number])
+        # output_file.writerow([''])
+        # print(values)
+        # run = 1
+        # for item in values:
+        #     output_file.writerow(['Run', run])
+        #     output_file.writerow(['Frequency', 'Intensity'])
+        #     peak_dict = values.get(item)
+        #     for key in peak_dict:
+        #         output_file.writerow([key, peak_dict.get(key)])
+        #     run += 1
+        #     output_file.writerow([''])
 
 # Takes in values, adds ln() key and associated value to the dictionary
 def build_table_dictionary(d):
@@ -89,7 +108,7 @@ def build_table_dictionary(d):
             values = d[number]
             
             for freq in values:
-                    key_list.append("ln(" + str(values[freq]) + ")")
+                    key_list.append("ln(" + str(freq) + ")")
                     value_list.append(math.log(values[freq], math.e))
     key_list.reverse()
     value_list.reverse()
@@ -104,5 +123,7 @@ def build_table_dictionary(d):
 def build_field_names(table_dict):
     field_names = []
     for key in table_dict:
-        field_names.append(key)
+        values = table_dict[key]
+        for field_key in values:
+            field_names.append(field_key)
     return field_names
