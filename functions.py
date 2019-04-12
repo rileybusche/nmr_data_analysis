@@ -65,16 +65,14 @@ def create_rawdata_csv(file_name, values, trial_number):
 # Creates CSV with table of data, %G and ln(freq)
 def create_table_csv(file_name, values, trial_number, diffusion_values):
     file_name += "_" + str(trial_number) + ".csv"
-
+    
     # Build Dictionary for Table
     table_dict = build_table_dictionary(values, diffusion_values)
     # Build Frequencies
     field_names = build_field_names(table_dict)
-    print(field_names)
-    print(len(field_names))
-
-    list_dicts_in_table = []
     
+    list_dicts_in_table = []
+
     for number in table_dict:
         list_dicts_in_table.append(table_dict[number])
 
@@ -100,7 +98,7 @@ def build_table_dictionary(d, diffusion_values):
                     value_list.append(math.log(values[freq], math.e))
     key_list.reverse()
     value_list.reverse()
-
+    
     for diff_number, number in enumerate(d):
             values = d[number]
             for index in range(len(values)):
@@ -110,8 +108,9 @@ def build_table_dictionary(d, diffusion_values):
 
 def build_field_names(table_dict):
     field_names = []
+    copy_dict = table_dict.copy()
     try:
-        dict_entry_for_names = table_dict.pop(1)
+        dict_entry_for_names = copy_dict.pop(1)
     except:
         print("ERROR : No data exists in dicitonary entry") 
 

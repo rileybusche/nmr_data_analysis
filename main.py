@@ -67,7 +67,7 @@ for trial_path in trials:
 
         # Builds Dict {frequency : Intensity}
         frequency_intensity_dict = fl.findIntensities(intensity_list, indices, frequencies)
-
+        # print(frequency_intensity_dict)
         outputs[file_number] = frequency_intensity_dict
 
     fl.create_rawdata_csv(args['output'], outputs, trial_number)
