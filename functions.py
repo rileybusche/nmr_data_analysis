@@ -63,11 +63,11 @@ def create_rawdata_csv(file_name, values, trial_number):
             output_file.writerow([''])
 
 # Creates CSV with table of data, %G and ln(freq)
-def create_table_csv(file_name, values, trial_number):
+def create_table_csv(file_name, values, trial_number, diffusion_values):
     file_name += "_" + str(trial_number) + ".csv"
 
     # Build Dictionary for Table
-    table_dict = build_table_dictionary(values)
+    table_dict = build_table_dictionary(values, diffusion_values)
     # Build Frequencies
     field_names = build_field_names(table_dict)
     print(field_names)
@@ -88,7 +88,7 @@ def create_table_csv(file_name, values, trial_number):
             writer.writerow(item)
 
 # Takes in values, adds ln() key and associated value to the dictionary
-def build_table_dictionary(d):
+def build_table_dictionary(d, diffusion_values):
     key_list = []
     value_list = []
 
@@ -101,11 +101,11 @@ def build_table_dictionary(d):
     key_list.reverse()
     value_list.reverse()
 
-    for number in d:
+    for diff_number, number in enumerate(d):
             values = d[number]
             for index in range(len(values)):
                     values[key_list.pop()] = value_list.pop()
-            values["G"] = " x "
+            values["G"] = diffusion_values[diff_number]
     return d
 
 def build_field_names(table_dict):
@@ -119,3 +119,18 @@ def build_field_names(table_dict):
         field_names.append(key)
 
     return field_names
+
+def read_diffusion_ramp(path):
+    path += "/Difframp"
+    try:
+        file_object = open(path, "r")
+    except:
+        print("ERROR : Could not access 'Difframp' file. Check that it is in the proper folder and try again.")
+
+    diffusion_values = []
+    for line in file_object:
+            if line.find("#") == -1:
+                # Build List
+                diffusion_values.append(line)
+
+    return diffusion_values

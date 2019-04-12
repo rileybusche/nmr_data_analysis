@@ -16,7 +16,7 @@ args = vars(parser.parse_args())
 
 # Path is a user parameter
 try:
-    trials = glob.glob(args["path"] + "/*")
+    trials = glob.glob(args["path"] + "/Trial*")
 except:
     print("ERROR : Could not access files. Check path to folder and try again.")
 
@@ -24,6 +24,8 @@ except:
 frequencies = []
 for frequency in args['freq']:
     frequencies.append(frequency)
+
+diffusion_values = fl.read_diffusion_ramp(args["path"])
 
 outputs = {}
 
@@ -69,6 +71,6 @@ for trial_path in trials:
         outputs[file_number] = frequency_intensity_dict
 
     fl.create_rawdata_csv(args['output'], outputs, trial_number)
-    fl.create_table_csv(args['output'], outputs, trial_number)
+    fl.create_table_csv(args['output'], outputs, trial_number, diffusion_values)
     trial_number += 1
 
