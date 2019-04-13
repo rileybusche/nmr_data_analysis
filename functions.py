@@ -101,11 +101,12 @@ def build_table_dictionary(d, diffusion_values):
     
     for diff_number, number in enumerate(d):
             values = d[number]
-            for index in range(len(values)):
+            for _ in range(len(values)):
                     values[key_list.pop()] = value_list.pop()
             values["G"] = diffusion_values[diff_number]
     return d
 
+# Builds a list of the keys in dictionary to use in csv writer
 def build_field_names(table_dict):
     field_names = []
     copy_dict = table_dict.copy()
@@ -119,6 +120,7 @@ def build_field_names(table_dict):
 
     return field_names
 
+# Reads in the values from Difframp into diffusion_values[]
 def read_diffusion_ramp(path):
     path += "/Difframp"
     try:
@@ -129,7 +131,7 @@ def read_diffusion_ramp(path):
     diffusion_values = []
     for line in file_object:
             if line.find("#") == -1:
-                # Build List
+                # Converting values from Scientific to Standard for proper input into CSV
                 pos = line.find("e")
                 number = float(line[0 : pos])
                 power = int(line[pos + 1 : len(line)])
