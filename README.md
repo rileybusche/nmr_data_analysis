@@ -30,3 +30,5 @@ python main.py --path "/Users/rileybusche/Research/LVR_DIFFUSION_pH10.10_Trial_1
 
 
 /Users/rileybusche/Research/ph10
+
+python main.py --path "/Users/rileybusche/Research/ph_10" --freq -0.1202 3.1225 --output test

@@ -130,6 +130,10 @@ def read_diffusion_ramp(path):
     for line in file_object:
             if line.find("#") == -1:
                 # Build List
-                diffusion_values.append(line)
+                pos = line.find("e")
+                number = float(line[0 : pos])
+                power = int(line[pos + 1 : len(line)])
+
+                diffusion_values.append(number * pow(10, power))
 
     return diffusion_values
