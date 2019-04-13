@@ -21,19 +21,6 @@ for value in diffusion_values:
 for x in g_list:
         print(x)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # parser = argparse.ArgumentParser(description='Options.')
 # # parser.add_argument('--freq', metavar='N', type=float, nargs='+',
 # #                     help='frequency(s)', required=True)
