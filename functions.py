@@ -43,8 +43,13 @@ def findPeak(intestity_list, index):
 
 # Creates CSV of raw data
 def create_rawdata_csv(file_name, values, trial_number):
-    file_name += "_raw_data_" + str(trial_number) + ".csv"
-    with open(file_name, mode='w') as output_file:
+    file_name += "_raw_data.csv"
+    if trial_number == 1:
+        mode = 'w'
+    else:
+        mode = 'a'
+
+    with open(file_name, mode=mode) as output_file:
         
         output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
@@ -64,7 +69,11 @@ def create_rawdata_csv(file_name, values, trial_number):
 
 # Creates CSV with table of data, %G and ln(freq)
 def create_table_csv(file_name, values, trial_number, diffusion_values):
-    file_name += "_" + str(trial_number) + ".csv"
+    file_name += ".csv"
+    if trial_number == 1:
+        mode = 'w'
+    else:
+        mode = 'a'
     
     # Build Dictionary for Table
     table_dict = build_table_dictionary(values, diffusion_values)
@@ -76,7 +85,12 @@ def create_table_csv(file_name, values, trial_number, diffusion_values):
     for number in table_dict:
         list_dicts_in_table.append(table_dict[number])
 
-    with open(file_name, mode='w') as output_file:
+    with open(file_name, mode=mode) as output_file:
+        writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow([''])
+        writer.writerow(['Trail',trial_number])
+        writer.writerow([''])
+
         # Build Fieldnames from dictionary keys
         writer = csv.DictWriter(output_file, fieldnames=field_names)
         writer.writeheader()
