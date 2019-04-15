@@ -4,7 +4,7 @@ Riley Busche 2019
 
 The repository (and a more formatted view of this README) for this code can be found [here](https://github.com/rileybusche/nmr_data_analysis/).
 
-`main.py` and `functions.py` must be in the same folder for the program to function.
+`main.py`, `build_csv.py` and `functions.py` must be in the same folder for the program to function.
 
 # Prerequisites
 This program was written for Python 3.6 - though it should be forward compatible with all new versions of Python. However, it *may* not be backwards compatible with older verions of Python. 
@@ -37,7 +37,7 @@ The program currently has 3 user arguments, all of which are required in order f
             --output ph10
 
 # Full Command Example:
-Navigate to the folder containing `main.py` in terminal (OSx/Unix) or PowerShell/CommandPrompt (Windows) and type:
+Navigate to the folder containing `main.py`, `build_csv.py` and `functions.py` in terminal (OSx/Unix) or PowerShell/CommandPrompt (Windows) and type:
     `python main.py --path "/Users/rileybusche/Research/ph_10" --freq -0.1202 3.1225 --output test`
 
 # FILE STRUCTURE
