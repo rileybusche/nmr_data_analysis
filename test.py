@@ -4,11 +4,13 @@ import math
 import csv
 import functions as fl
 
-path = "/Users/rileybusche/Research/ph_10/*/"
-folders = glob.glob(path)
+path = "/Users/rileybusche/Research/ph_10/"
+number_folders = glob.glob(path + "*/")
 
-for path_folder in folders:
-        print(path_folder)
+folder_number = 1
+for _ in range(len(number_folders)):
+        print(path + "Trial_" + str(folder_number))
+        folder_number += 1
 # diffusion_values = fl.read_diffusion_ramp(path)
 
 # g_list = []

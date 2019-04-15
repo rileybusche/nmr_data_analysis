@@ -2,6 +2,7 @@
 # Program to sort through NMR text files and pull out the Intensities associated with given Frequencys
 import matplotlib.pyplot as plt
 import functions as fl
+import build_csv as bcsv
 import glob
 import argparse
 
@@ -16,7 +17,7 @@ args = vars(parser.parse_args())
 
 # Path from user arugument
 try:
-    trials = glob.glob(args["path"] + "/Trial*")
+    trials = glob.glob(args["path"] + "/*/")
 except:
     print("ERROR : Could not access files. Check path to folder and try again.")
 
@@ -31,13 +32,18 @@ outputs = {}
 
 trial_number = 1
 
-for trial_path in trials:
-
+# Runs for the number of Trials 
+for _ in range(len(trials)):
+    trial_path = args["path"] + "/Trial_" + str(trial_number)
+    # Getting number of files to be read in the folder
     files = glob.glob(trial_path + "/*[0-99].txt")
     print(trial_path)
+
     for file_number in range(1, len(files) + 1):
+        file_name = trial_path + "/" + str(file_number) + ".txt"
+
         try:
-            file_object = open(trial_path + "/" + str(file_number) + ".txt", "r")
+            file_object = open(file_name, "r")
         except:
             print("Error : Could not access files. Check if folder and naming structure is correct and try agian.")
 
@@ -70,7 +76,8 @@ for trial_path in trials:
         # print(frequency_intensity_dict)
         outputs[file_number] = frequency_intensity_dict
 
-    fl.create_rawdata_csv(args['output'], outputs, trial_number)
-    fl.create_table_csv(args['output'], outputs, trial_number, diffusion_values)
+    bcsv.create_rawdata_csv(args['output'], outputs, trial_number)
+    bcsv.create_table_csv(args['output'], outputs, trial_number, diffusion_values)
     trial_number += 1
 
+print("Complete.")
