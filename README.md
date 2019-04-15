@@ -1,34 +1,37 @@
-This is currently a "To-do/Notes" Readme. Will transition this to a formal Readme
-in the future.
+Riley Busche 2019
 
-Loop through all files using glob now
+# NMR Data Anylsis Program
 
-write search algorithm to find highest values near peaks.
-    -   maybe re construct a graph from intensity values? 
+The repository (and a more formated view of this README) for this code can be found [here](https://github.com/rileybusche/nmr_data_analysis/).
 
-Use regex to differentiate between numbered files and Diffusion gradient file?
+`main.py` and `functions.py` must be in the same folder for the program to function.
 
---path "/Users/rileybusche/Research/LVR_DIFFUSION_pH10.10_Trial_1/*.txt"
+# Program Arguements
+The program currently has 3 user arguements, all of which are required inorder for the program to run.
+    --path 
+        This the path to the folder containing the file structure to be analyized. The required file structure is detailed below.
+        To prevent possible errors due to naming of folders, include the path in side quotation marks.
+        
+        Example path:
+            --path "/Users/rileybusche/Research/ph_10"
+    
+    --freq
+        This command is used to specify the frequencies to be analyzed. Separate each new frequency with a space.
+        These values are found by peaking the peaks of interest in Topspin 3.2.
 
-glob.glob('./[0-9].txt')
-path = args['path'] + '/*[0-99].txt'
+        Example freq:
+            --freq -0.1202 3.1225 5.6074
+    
+    --output
+        This command is used to name the output files from the program. This program produces CSV files containing a table of 
+        the frequencies and associated intensities, the natural log of the intensities, and the %G values for each trial.
+        When specifying a file name, DO NOT include the file extension in the name.
 
-/Users/rileybusche/research_test/ph_10
+        Example output:
+            --output ph10
 
-OUTPUTS STRUCTURE:
+# Full Command Example:
+Navigate to the folder containing `main.py` in terminal (OSx/Unix) or PowerShell/CommandPrompt (Windows) and type:
+    `python main.py --path "/Users/rileybusche/Research/ph_10" --freq -0.1202 3.1225 --output test`
 
-{1: {-0.1202: 2578039.03125, 3.1225: 4778900.5} }
-
-for inner_dict in outputs:
-    inner_dict = 1, 2, 3, ...
-
-freq-intensity dict:
-{-0.1202: 2578039.03125, 3.1225: 4778900.5, 4.09: 23206.625}
-
-python main.py --path "/Users/rileybusche/Research/LVR_DIFFUSION_pH10.10_Trial_1" --freq -0.1202 3.1225
-
-
-
-/Users/rileybusche/Research/ph10
-
-python main.py --path "/Users/rileybusche/Research/ph_10" --freq -0.1202 3.1225 --output test
+# FILE STRUCTURE

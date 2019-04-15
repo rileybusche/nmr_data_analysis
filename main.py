@@ -14,7 +14,7 @@ parser.add_argument('--output', help='Output CSV filename.', required=True)
 
 args = vars(parser.parse_args())
 
-# Path is a user parameter
+# Path from user arugument
 try:
     trials = glob.glob(args["path"] + "/Trial*")
 except:
