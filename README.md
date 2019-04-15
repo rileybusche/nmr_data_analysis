@@ -13,6 +13,7 @@ To ensure this program works correctly, have Python 3.6 or newer installed.
 
 # Program Arguments
 The program currently has 3 user arguments, all of which are required in order for the program to run.
+
     --path 
         This the path to the folder containing the file structure to be analyzed. The required file structure is detailed below.
         To prevent possible errors due to naming of folders, include the path in side quotation marks.

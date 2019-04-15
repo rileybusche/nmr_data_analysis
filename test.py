@@ -4,22 +4,25 @@ import math
 import csv
 import functions as fl
 
-path = "/Users/rileybusche/Research/ph_10"
+path = "/Users/rileybusche/Research/ph_10/*/"
+folders = glob.glob(path)
 
-diffusion_values = fl.read_diffusion_ramp(path)
+for path_folder in folders:
+        print(path_folder)
+# diffusion_values = fl.read_diffusion_ramp(path)
 
-g_list = []
+# g_list = []
 
-for value in diffusion_values:
+# for value in diffusion_values:
 
-        pos = value.find("e")
-        number = float(value[0:pos])
-        power = int(value[pos+1:len(value)])
+#         pos = value.find("e")
+#         number = float(value[0:pos])
+#         power = int(value[pos+1:len(value)])
 
-        g_list.append(number * pow(10, power))
+#         g_list.append(number * pow(10, power))
 
-for x in g_list:
-        print(x)
+# for x in g_list:
+#         print(x)
 
 # parser = argparse.ArgumentParser(description='Options.')
 # # parser.add_argument('--freq', metavar='N', type=float, nargs='+',
