@@ -19,6 +19,7 @@ def create_rawdata_csv(file_name, values, trial_number):
         output_file.writerow(['Trial', trial_number])
         output_file.writerow([''])
         
+        # Looping through runs and printing out raw data
         run = 1
         for item in values:
             output_file.writerow(['Run', run])
@@ -91,6 +92,7 @@ def build_field_names(table_dict):
     except:
         print("ERROR : No data exists in dicitonary entry") 
 
+    # Pulls key from dictionary and appends key to field_names
     for key in dict_entry_for_names:
         field_names.append(key)
 

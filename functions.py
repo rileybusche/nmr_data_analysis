@@ -5,11 +5,12 @@ def calculateIndexs(left_bound, right_bound, size, frequencies):
     indices = []
     # Calculating y = m x + b equation for finding index of intestity from given frequency
     
-    slope = (0 - size)/(left_bound - right_bound)      # Point Slope form to find m
-    y_int = 0 - (slope * left_bound)                  # Using line equaiton to find y-int
+    slope = (0 - size)/(left_bound - right_bound)       # Point Slope form to find m
+    y_int = 0 - (slope * left_bound)                    # Using line equaiton to find y-int
 
     # index = slope * (given frequency) + y_int
     # This index (frequency) will be truncated to get a valid whole number for the index
+    # Any rounding errors here are taken care of with the searching algorithm
     for frequency in frequencies:
         indices.append(int((slope * frequency) + y_int))
     

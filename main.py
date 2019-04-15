@@ -26,6 +26,7 @@ frequencies = []
 for frequency in args['freq']:
     frequencies.append(frequency)
 
+# Storing Diffusion Gradient values into list
 diffusion_values = fl.read_diffusion_ramp(args["path"])
 
 outputs = {}
@@ -39,6 +40,7 @@ for _ in range(len(trials)):
     files = glob.glob(trial_path + "/*[0-99].txt")
     print(trial_path)
 
+    # looping through all files in the trial
     for file_number in range(1, len(files) + 1):
         file_name = trial_path + "/" + str(file_number) + ".txt"
 
@@ -58,8 +60,6 @@ for _ in range(len(trials)):
                 size = int(tokens[3])-1
                 break
 
-        step_size = (left_bound+abs(right_bound))/size
-
         # Build list of INTENSITIES
         intensity_list = []
 
@@ -76,6 +76,7 @@ for _ in range(len(trials)):
         # print(frequency_intensity_dict)
         outputs[file_number] = frequency_intensity_dict
 
+    # Write output data to CSV
     bcsv.create_rawdata_csv(args['output'], outputs, trial_number)
     bcsv.create_table_csv(args['output'], outputs, trial_number, diffusion_values)
     trial_number += 1
