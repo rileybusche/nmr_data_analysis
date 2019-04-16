@@ -19,7 +19,7 @@ def calculateIndexs(left_bound, right_bound, size, frequencies):
 # Pulls the intensities out of intensity_list and stores in a dictionary
 def findIntensities(intensity_list, indices, frequencies):
     frequency_intensity_dict = {}
-    for index, frequency in map(None, indices, frequencies):
+    for index, frequency in zip(indices, frequencies):
         frequency_intensity_dict[frequency] = findPeak(intensity_list, index)
 
     return frequency_intensity_dict
