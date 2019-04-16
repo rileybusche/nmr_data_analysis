@@ -38,6 +38,6 @@ The program currently has 3 user arguments, all of which are required in order f
 
 # Full Command Example:
 Navigate to the folder containing `main.py`, `build_csv.py` and `functions.py` in terminal (OSx/Unix) or PowerShell/CommandPrompt (Windows) and type:
-    `python main.py --path "/Users/rileybusche/Research/ph_10" --freq -0.1202 3.1225 --output test`
+    `python main.py --path "/Users/rileybusche/Research/ph_10" --freq -0.1202 3.1225 --output ph_10_Trial_1`
 
 # FILE STRUCTURE
