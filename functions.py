@@ -59,3 +59,6 @@ def read_diffusion_ramp(path):
                 diffusion_values.append(number * pow(10, power))
 
     return diffusion_values
+
+
+
