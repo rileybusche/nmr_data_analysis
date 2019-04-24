@@ -19,25 +19,19 @@ The program currently has 3 user arguments, all of which are required in order f
         To prevent possible errors due to naming of folders, include the path in side quotation marks.
         
         Example path:
-            --path "/Users/rileybusche/Research/ph_10"
+            --path "/Users/rileybusche/Research/LVR_Diffusion"
     
     --freq
         This command is used to specify the frequencies to be analyzed. Separate each new frequency with a space.
-        These values are found by peaking the peaks of interest in Topspin 3.2.
+        These values are found by peaking the peaks of interest in Topspin 3.2. 
+
+        This is only used if all the frequencies are extremely close together. Omiting this result in the program prompting the user for the peak frequencies for each pH.
 
         Example freq:
             --freq -0.1202 3.1225 5.6074
-    
-    --output
-        This command is used to name the output files from the program. This program produces CSV files containing a table of 
-        the frequencies and associated intensities, the natural log of the intensities, and the %G values for each trial.
-        When specifying a file name, DO NOT include the file extension in the name.
-
-        Example output:
-            --output ph10
 
 # Full Command Example:
 Navigate to the folder containing `main.py`, `build_csv.py` and `functions.py` in terminal (OSx/Unix) or PowerShell/CommandPrompt (Windows) and type:
-    `python main.py --path "/Users/rileybusche/Research/ph_10" --freq -0.1202 3.1225 --output ph_10_Trial_1`
+    `python main.py --path "/Users/rileybusche/Research/LVR_Diffusion" --freq -0.1202 3.1225
 
 # FILE STRUCTURE

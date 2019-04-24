@@ -17,8 +17,10 @@ args = vars(parser.parse_args())
 
 # User inputed
 frequencies = []
-for frequency in args['freq']:
-    frequencies.append(frequency)
+
+if args['freq']:
+    for frequency in args['freq']:
+        frequencies.append(frequency)
 
 # Storing Diffusion Gradient values into list
 diffusion_values = fl.read_diffusion_ramp(args["path"])
@@ -47,13 +49,22 @@ for ph in samples:
         file_name_output = tokens[len(tokens)-2]
     else:
         file_name_output = tokens[len(tokens)-1]
+    
+    if not args['freq']:
+        while True:
+            freq = input("Frequencies for %s: " % file_name_output)
+            if freq:
+                break
+        input_freq = freq.split(' ')
+        for token in input_freq:
+            frequencies.append(float(token))
 
     # Runs for the number of Trials 
     for _ in range(len(trials)):
         trial_path = ph + "Trial" + str(trial_number)
         # Getting number of files to be read in the folder
         files = glob.glob(trial_path + "/*[0-99].txt")
-        print(trial_path)
+        # print(trial_path)
 
         # looping through all files in the trial
         for file_number in range(1, len(files) + 1):
