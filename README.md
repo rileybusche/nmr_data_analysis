@@ -35,3 +35,5 @@ Navigate to the folder containing `main.py`, `build_csv.py` and `functions.py` i
     `python main.py --path "/Users/rileybusche/Research/LVR_Diffusion" --freq -0.1202 3.1225
 
 # FILE STRUCTURE
+
+![image](file_structure.png)
