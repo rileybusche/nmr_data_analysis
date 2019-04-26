@@ -1,6 +1,5 @@
 # Riley Busche 2019
 # Program to sort through NMR text files and pull out the Intensities associated with given Frequencys
-import matplotlib.pyplot as plt
 import functions as fl
 import build_csv as bcsv
 import glob
