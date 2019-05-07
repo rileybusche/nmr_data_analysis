@@ -13,6 +13,7 @@ def calculateIndexs(left_bound, right_bound, size, frequencies):
     # Any rounding errors here are taken care of with the searching algorithm
     for frequency in frequencies:
         indices.append(int((slope * frequency) + y_int))
+    print(indices)
     
     return indices
 

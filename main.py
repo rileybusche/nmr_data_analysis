@@ -106,4 +106,7 @@ for ph in samples:
         bcsv.create_table_csv(file_name_output, outputs, trial_number, diffusion_values)
         trial_number += 1
 
+    frequencies = []
+
+
 print("Complete.")
