@@ -10,7 +10,7 @@ def create_rawdata_csv(file_name, values, trial_number):
         mode = 'w'
     else:
         mode = 'a'
-
+    print(file_name)
     with open(file_name, mode=mode) as output_file:
         
         output_file = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)

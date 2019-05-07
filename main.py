@@ -42,7 +42,7 @@ for ph in samples:
 
     trial_number = 1
 
-    tokens = ph.split('/')
+    tokens = ph.split('\\')
 
     if tokens[len(tokens)-1] == '':
         file_name_output = tokens[len(tokens)-2]
