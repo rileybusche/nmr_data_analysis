@@ -10,7 +10,6 @@ parser = argparse.ArgumentParser(description='Options.')
 parser.add_argument('--path', help='Full Path to folder contianing files.', required=True)
 parser.add_argument('--freq', metavar='N', type=float, nargs='+',
                     help='frequency(s)', required=False)
-parser.add_argument('--output', help='Output CSV filename.', required=False)
 
 args = vars(parser.parse_args())
 

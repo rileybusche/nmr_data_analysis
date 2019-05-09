@@ -12,10 +12,10 @@ This program was written for Python 3.6 - though it should be forward compatible
 To ensure this program works correctly, have Python 3.6 or newer installed.
 
 # Program Arguments
-The program currently has 3 user arguments, all of which are required in order for the program to run.
+The program currently has 2 user arguments, one is required (--path) in order for the program to run.
 
     --path 
-        This the path to the folder containing the file structure to be analyzed. The required file structure is detailed below.
+        This is the path to the folder containing the file structure to be analyzed. The required file structure is detailed below.
         To prevent possible errors due to naming of folders, include the path in side quotation marks.
         
         Example path:
@@ -26,6 +26,8 @@ The program currently has 3 user arguments, all of which are required in order f
         These values are found by peaking the peaks of interest in Topspin 3.2. 
 
         This is only used if all the frequencies are extremely close together. Omiting this result in the program prompting the user for the peak frequencies for each pH.
+
+        If no frequeinces are specified on the command line, you will be prompted for new frequencies for each pH.
 
         Example freq:
             --freq -0.1202 3.1225 5.6074
