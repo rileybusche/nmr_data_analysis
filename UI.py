@@ -29,5 +29,14 @@ while True:
     event, values = window.read()
     if event == "Exit" or event == sg.WIN_CLOSED:
         break
+    # File in File List
+    if event == "-FOLDER-":
+        folder = values["-FOLDER-"]
+        try:
+            file_list = os.listdir(folder)
+        except:
+            file_list = []
+
+        window["-FILE LIST-"].update(file_list)
 
 window.close()
