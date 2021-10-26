@@ -14,7 +14,8 @@ function MainConatiner() {
 
     function handleFrequencyRemove(value) {
         console.log(value);
-        const tempArr = formValues;
+        const tempArr = [...formValues];
+        console.log(tempArr)
         tempArr.splice(tempArr.indexOf(value), 1);
         setFormValues(tempArr);
     }
