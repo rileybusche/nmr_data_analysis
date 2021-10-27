@@ -19,7 +19,6 @@
 .Container-Title {
     margin-left: 2rem;
     margin-right: 2rem;
-
 }
 
 .Frequency-Container {
@@ -71,7 +70,23 @@
     border: none;
     box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.2);
 }
-  
+
+.Module-Container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    min-height: 336px;
+}
+
+.Frequency-Module-Container {
+    display: flex;
+    flex: 0 1 25%;
+    justify-content: center;
+    align-items: center;
+}
+
 .Frequency-Module {
     display: flex;
     width: 10rem;

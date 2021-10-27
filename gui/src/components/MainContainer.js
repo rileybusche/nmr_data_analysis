@@ -21,16 +21,16 @@ function MainConatiner() {
     }
 
     function handleSubmit() {
-        if (input.trim() !== '') {
-            console.log(input);
-            setCount(count + 1);
-
-            const newFormValues = [input, ...formValues]
-
-            setFormValues(newFormValues);
-
-            console.log(formValues);
-            console.log(count)
+        const regex = /^-?[0-9]+.?[0-9]*$/g;
+        const formatedInput = input.trim();
+        if (formatedInput !== '' && formatedInput.match(regex) !== null) {
+            if (!formValues.includes(formatedInput)) {
+                console.log(formatedInput);
+                setCount(count + 1);
+                
+                const newFormValues = [formatedInput, ...formValues]
+                setFormValues(newFormValues);
+            }
         }
     }
 
@@ -44,9 +44,9 @@ function MainConatiner() {
                     <input className='Frequency-Input' value={input} onInput={hanleInput} id="Frequency-Input" name="name" />
                     <button onClick={handleSubmit}>Add</button>
                 </div>
-                
-                { formValues.map((value, i) => <Frequency value={value} handleFrequencyRemove={handleFrequencyRemove} key={i} />) }
-
+                <div className='Module-Container'>
+                    { formValues.map((value, i) => <Frequency value={value} handleFrequencyRemove={handleFrequencyRemove} key={i} />) }
+                </div>
             </div>
 
         </div>
