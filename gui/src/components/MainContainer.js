@@ -3,21 +3,21 @@ import '../style/MainContainer.css';
 import React, {useState} from 'react';
 import Frequency from './Frequency';
 
-function MainConatiner() {
+function MainConatiner(props) {
     const [input, setInput] = useState('')
     const [formValues, setFormValues] = useState([]);
-    const [count, setCount] = useState(0);
 
     function hanleInput(e) {
         setInput(e.target.value);
     }
 
     function handleFrequencyRemove(value) {
-        console.log(value);
+
         const tempArr = [...formValues];
-        console.log(tempArr)
+
         tempArr.splice(tempArr.indexOf(value), 1);
         setFormValues(tempArr);
+        props.storeFrequencies(tempArr);
     }
 
     function handleSubmit() {
@@ -25,11 +25,11 @@ function MainConatiner() {
         const formatedInput = input.trim();
         if (formatedInput !== '' && formatedInput.match(regex) !== null) {
             if (!formValues.includes(formatedInput)) {
-                console.log(formatedInput);
-                setCount(count + 1);
-                
+
                 const newFormValues = [formatedInput, ...formValues]
                 setFormValues(newFormValues);
+
+                props.storeFrequencies(newFormValues);
             }
         }
     }

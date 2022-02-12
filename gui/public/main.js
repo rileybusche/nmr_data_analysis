@@ -1,17 +1,29 @@
+const {app, BrowserWindow, ipcMain} = require('electron')
+const path = require('path')
 
-const { app, BrowserWindow } = require('electron');
+const {PythonShell} = require('python-shell');
+
+let pyshell = new PythonShell('python.py');
 
 require('@electron/remote/main').initialize()
 
-
 function createWindow() {
+  console.log('Application has started');
+
+  // var python = require('child_process').spawn('python', ['./python.py']);
+  // python.stdout.on('data',function(data){
+  //   console.log("data: ",data.toString('utf8'));
+  //   console.log('Test');
+  // });
   // Create the browser window.
   const win = new BrowserWindow({
     width: 1100,
     height: 800,
     webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
+      contextIsolation: false,
     },
   });
 
@@ -45,6 +57,11 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
+    console.log('Application has started');
     createWindow();
   }
+});
+
+ipcMain.on('OSC_VOLTAGE_DATA', (event, args) => {
+  mainWindow.webContents.send('OSC_VOLTAGE_DATA', args);
 });
