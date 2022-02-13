@@ -62,6 +62,8 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('OSC_VOLTAGE_DATA', (event, args) => {
-  mainWindow.webContents.send('OSC_VOLTAGE_DATA', args);
+ipcMain.on('PYTHON_START', (event, args) => {
+  // mainWindow.webContents.send('PYTHON_START', args);
+  const { message } = args;
+  console.log(args);
 });
