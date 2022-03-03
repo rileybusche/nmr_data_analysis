@@ -22,13 +22,14 @@ function App() {
 
   function sendToPython() {
 
-    ipcRenderer.send(
-      'PYTHON_START', 
-      { 
-        "Key1": 123,
-        "Key2": 456
-      }
-    );
+    const payload = [filePath]
+    payload.push.apply(payload, frequencies)
+    if ( filePath !== '' && frequencies !== '' ) {
+      ipcRenderer.send(
+        'START_BACKGROUND_VIA_MAIN',
+        payload
+      );
+    }
   }
 
   function runAnalysis() {

@@ -1,5 +1,6 @@
-const {app, BrowserWindow, ipcMain} = require('electron')
-const path = require('path')
+const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
+const path = require('path');
+const url = require('url');
 
 const {PythonShell} = require('python-shell');
 
@@ -62,8 +63,53 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('PYTHON_START', (event, args) => {
-  // mainWindow.webContents.send('PYTHON_START', args);
-  const { message } = args;
+
+// temporary variable to store data while background
+// process is ready to start processing
+let cache = {
+	data: undefined,
+};
+
+// This event listener will listen for request
+// from visible renderer process App.js
+ipcMain.on('START_BACKGROUND_VIA_MAIN', (event, args) => {
+	const backgroundFileUrl = url.format({
+		pathname: path.join(__dirname, `../background_tasks/run_script.html`),
+		protocol: 'file:',
+		slashes: true,
+	});
+	hiddenWindow = new BrowserWindow({
+		show: true,
+		webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true,
+      contextIsolation: false,
+		},
+	});
+	hiddenWindow.loadURL(backgroundFileUrl);
+
+	hiddenWindow.webContents.openDevTools();
+
+	hiddenWindow.on('closed', () => {
+		hiddenWindow = null;
+	});
+
+	cache.data = args;
+});
+
+
+// This event listener will listen for data being sent back
+// from the background renderer process
+ipcMain.on('MESSAGE_FROM_BACKGROUND', (event, args) => {
+	// mainWindow.webContents.send('MESSAGE_FROM_BACKGROUND_VIA_MAIN', args);
+  console.log("Python Return:")
   console.log(args);
+});
+
+
+// Listening for background ready
+ipcMain.on('BACKGROUND_READY', (event, args) => {
+	event.reply('START_SCRIPT', {
+		data: cache.data,
+	});
 });
