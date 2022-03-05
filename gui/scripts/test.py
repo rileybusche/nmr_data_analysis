@@ -14,6 +14,6 @@ path = path_separator.join(path)
 
 try:
     print(path, frequencies)
-    print('Does file exist: ', os.path.exists('test'))
+    print('Does file exist: ', os.path.exists(path))
 except:
     print('Python Script Failed with ', sys.exc_info()[0])

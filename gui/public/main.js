@@ -2,6 +2,8 @@ const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
 const path = require('path');
 const url = require('url');
 
+const fs = require('fs');
+
 const {PythonShell} = require('python-shell');
 
 let pyshell = new PythonShell('python.py');
@@ -112,4 +114,16 @@ ipcMain.on('BACKGROUND_READY', (event, args) => {
 	event.reply('START_SCRIPT', {
 		data: cache.data,
 	});
+});
+
+// Call from Render (App.js) to read files at dir path
+ipcMain.on('READ_FILES', (event, args) => {
+  const path = '/Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/';
+  fs.readdir(path, (err, files) => {
+    files.forEach(file => {
+      console.log(file);
+    });
+    // Send Files Back to Renderer Thread in MainContainer.js
+    event.reply('PH_VALUES_RETURN', files);
+  });
 });
