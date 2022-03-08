@@ -5,7 +5,6 @@ import AnalysisButton from './components/AnalysisButton';
 import FileSearch from './components/FileSearch';
 
 import { useState } from 'react';
-const fs = require('fs');
 const { ipcRenderer } = window.require('electron');
 
 function App() {
@@ -18,7 +17,7 @@ function App() {
     // Sends input path to main thread to get file structue to populate pH Values in MainContainer
     ipcRenderer.send(
       'READ_FILES'
-    )
+    );
   }
 
   function storeFrequencies(newFrequencies) {

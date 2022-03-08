@@ -4,20 +4,11 @@ const url = require('url');
 
 const fs = require('fs');
 
-const {PythonShell} = require('python-shell');
-
-let pyshell = new PythonShell('python.py');
-
 require('@electron/remote/main').initialize()
 
 function createWindow() {
   console.log('Application has started');
 
-  // var python = require('child_process').spawn('python', ['./python.py']);
-  // python.stdout.on('data',function(data){
-  //   console.log("data: ",data.toString('utf8'));
-  //   console.log('Test');
-  // });
   // Create the browser window.
   const win = new BrowserWindow({
     width: 1100,
@@ -69,7 +60,7 @@ app.on('activate', () => {
 // temporary variable to store data while background
 // process is ready to start processing
 let cache = {
-	data: undefined,
+	data: undefined
 };
 
 // This event listener will listen for request
