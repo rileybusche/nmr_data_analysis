@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const url = require('url');
 
@@ -110,11 +110,19 @@ ipcMain.on('BACKGROUND_READY', (event, args) => {
 // Call from Render (App.js) to read files at dir path
 ipcMain.on('READ_FILES', (event, args) => {
   const path = '/Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/';
+  var phFolders = [];
+  const re = new RegExp('ph[0-9]');
+  // const re = /ph/ + /^-?[0-9]+.?[0-9]*$/g
   fs.readdir(path, (err, files) => {
     files.forEach(file => {
-      console.log(file);
+      // Send Files Back to Renderer Thread in MainContainer.js
+      if (file.match(re) !== null) {
+        phFolders.push(file);
+        console.log(file)
+      }
+      // console.log(file);
     });
-    // Send Files Back to Renderer Thread in MainContainer.js
-    event.reply('PH_VALUES_RETURN', files);
+    // Pune any files/folders that are not ph*
+    event.reply('PH_VALUES_RETURN', phFolders);
   });
 });

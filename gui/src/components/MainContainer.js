@@ -2,7 +2,8 @@ import '../style/MainContainer.css';
 
 import React, {useState} from 'react';
 import Frequency from './Frequency';
-import { ipcRenderer } from 'electron';
+import ValueContainer from './ValueContainer';
+const { ipcRenderer } = window.require('electron');
 
 function MainConatiner(props) {
     const [input, setInput] = useState('');
@@ -58,7 +59,8 @@ function MainConatiner(props) {
 
                 </div>
                 <div>
-
+                    {/* <ValueContainer value={phValues} />  */}
+                    {phValues.map((value, i) => <ValueContainer value={value} />)}
                 </div>
                 {/* <div className='Module-Container'>
                     { formValues.map((value, i) => <Frequency value={value} handleFrequencyRemove={handleFrequencyRemove} key={i} />) }

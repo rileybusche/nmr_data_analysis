@@ -1,10 +1,19 @@
 import React from "react";
-
+import "../style/ValueContainer.css";
 function ValueContainer(props) {
 
+    function StoreInput(event) {
+        console.log(event.target.value);
+    }
+
     return(
-        <div className='Frequency-Module'>
-            <h3>{props.value}</h3>
+        <div className='Value-Container'>
+            <div className="PH-Container">
+                <p>{props.value}</p>
+            </div>
+            <div className="PH-Input-Container">
+                <input placeholder={props.value} onInput={StoreInput}/>
+            </div>
 
         </div>
     );
