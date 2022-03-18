@@ -2,8 +2,14 @@ import React from "react";
 import "../style/ValueContainer.css";
 function ValueContainer(props) {
 
-    function StoreInput(event) {
-        console.log(event.target.value);
+    function storeInput(event) {
+        const payload = {
+            'pH': props.value, 
+            'frequency': event.target.value, 
+            'index': props.indexValue
+        };
+        props.storeData(payload);
+        // console.log(payload);
     }
 
     return(
@@ -12,7 +18,7 @@ function ValueContainer(props) {
                 <p>{props.value}</p>
             </div>
             <div className="PH-Input-Container">
-                <input placeholder={props.value} onInput={StoreInput}/>
+                <input placeholder={props.value} onInput={storeInput}/>
             </div>
 
         </div>

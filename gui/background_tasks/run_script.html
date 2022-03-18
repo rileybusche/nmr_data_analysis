@@ -6,14 +6,25 @@
     console.log("Background Initialized.")
     // This will be called from main.js
     ipcRenderer.on('START_SCRIPT', (event, args) => {
-		const { data } = args;
+		console.log(args);
 		let pyshell = new PythonShell(path.join(__dirname, '/../scripts/test.py'), {
 			pythonPath: 'python3',
-			args: [data]
+			pythonOptions:['-u'], // Gets print results in real time
+			args: [args.data]
 		});
 
 		pyshell.on('message', function(results) {
 			ipcRenderer.send('MESSAGE_FROM_BACKGROUND', { message: results });
+			if (results === 'Freq.'){
+				pyshell.send('Testing Input');
+			}
+		});
+		// end the input stream and allow the process to exit
+		pyshell.end(function (err,code,signal) {
+		if (err) throw err;
+		console.log('The exit code was: ' + code);
+		console.log('The exit signal was: ' + signal);
+		console.log('finished');
 		});
     });
 

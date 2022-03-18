@@ -4,69 +4,56 @@ import functions as fl
 import build_csv as bcsv
 import glob
 import argparse
-
-# Command Line Arguments
-parser = argparse.ArgumentParser(description='Options.')
-parser.add_argument('--path', help='Full Path to folder contianing files.', required=True)
-parser.add_argument('--freq', metavar='N', type=float, nargs='+',
-                    help='frequency(s)', required=False)
-
-args = vars(parser.parse_args())
-
-# User inputed
-frequencies = []
-
-if args['freq']:
-    for frequency in args['freq']:
-        frequencies.append(frequency)
-
-# Storing Diffusion Gradient values into list
-diffusion_values = fl.read_diffusion_ramp(args["path"])
+import os.path
+import json
 
 outputs = {}
 
-# Path from user argument
+data_path = sys.argv[1].strip()
+samples = []
+data = {}
+experiment_path = ''
 try:
-    samples = glob.glob(args["path"] + "/*/")
+    if os.path.exists(data_path):
+        data_file = open(data_path)
+        data = json.load(data_file)
+        # Gets the path to experiment files from data.json file
+        experiment_path = '/'.join(data['SamplesFilePath'].split('/')[:-1]) + '/'
+        samples = list(data['Samples'].keys())
+        data_file.close()
 except:
-    print("ERROR : Could not access files. Check path to folder and try again.")
+    print(f'Failed to get Data Files from: {data_path}', sys.exc_info()[0])
 
+diffusion_values = fl.read_diffusion_ramp(experiment_path + 'Difframp')
+
+# Loop through PH array
 for ph in samples:
 
     # Path from user arugument
     try:
-        trials = glob.glob(ph + "*/")
+        # /Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/ph7.59/*/ <-
+        trials = glob.glob(experiment_path + ph + "/*/")
+        trails = sorted(trials)
     except:
         print("ERROR : Could not access files. Check path to folder and try again.")
 
     trial_number = 1
 
-    tokens = ph.split('\\')
-
-    if tokens[len(tokens)-1] == '':
-        file_name_output = tokens[len(tokens)-2]
-    else:
-        file_name_output = tokens[len(tokens)-1]
+    file_name_output = ph
     
-    if not args['freq']:
-        while True:
-            freq = input("Frequencies for %s: " % file_name_output)
-            if freq:
-                break
-        input_freq = freq.split(' ')
-        for token in input_freq:
-            frequencies.append(float(token))
+    frequencies_string = data['Samples'][ph].split()
+    frequencies = [float(freq) for freq in frequencies_string]
 
     # Runs for the number of Trials 
-    for _ in range(len(trials)):
-        trial_path = ph + "Trial" + str(trial_number)
+    for trail in trails:
+
         # Getting number of files to be read in the folder
-        files = glob.glob(trial_path + "/*[0-99].txt")
+        files = glob.glob(trail + "*[0-99].txt")
+        files = sorted(files)
         # print(trial_path)
 
         # looping through all files in the trial
-        for file_number in range(1, len(files) + 1):
-            file_name = trial_path + "/" + str(file_number) + ".txt"
+        for file_number in files:
 
             try:
                 file_object = open(file_name, "r")
@@ -104,8 +91,6 @@ for ph in samples:
         bcsv.create_rawdata_csv(file_name_output, outputs, trial_number)
         bcsv.create_table_csv(file_name_output, outputs, trial_number, diffusion_values)
         trial_number += 1
-
-    frequencies = []
 
 
 print("Complete.")

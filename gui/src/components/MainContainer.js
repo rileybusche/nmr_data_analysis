@@ -6,42 +6,42 @@ import ValueContainer from './ValueContainer';
 const { ipcRenderer } = window.require('electron');
 
 function MainConatiner(props) {
-    const [input, setInput] = useState('');
+    // const [input, setInput] = useState('');
     const [formValues, setFormValues] = useState([]);
     const [phValues, setPhValues] = useState([]);
     
-    // Return of Folder structure from
+    // Return of Folder structure from Main.js
     ipcRenderer.on('PH_VALUES_RETURN', (event, args) => {
         setPhValues(args);
-        console.log(phValues);
+        props.setPhCount(args.length);
     });
 
-    function hanleInput(e) {
-        setInput(e.target.value);
-    }
+    // function hanleInput(e) {
+    //     setInput(e.target.value);
+    // }
 
-    function handleFrequencyRemove(value) {
+    // function handleFrequencyRemove(value) {
 
-        const tempArr = [...formValues];
+    //     const tempArr = [...formValues];
 
-        tempArr.splice(tempArr.indexOf(value), 1);
-        setFormValues(tempArr);
-        props.storeFrequencies(tempArr);
-    }
+    //     tempArr.splice(tempArr.indexOf(value), 1);
+    //     setFormValues(tempArr);
+    //     props.storeFrequencies(tempArr);
+    // }
 
-    function handleSubmit() {
-        const regex = /^-?[0-9]+.?[0-9]*$/g;
-        const formatedInput = input.trim();
-        if (formatedInput !== '' && formatedInput.match(regex) !== null) {
-            if (!formValues.includes(formatedInput)) {
+    // function handleSubmit() {
+    //     const regex = /^-?[0-9]+.?[0-9]*$/g;
+    //     const formatedInput = input.trim();
+    //     if (formatedInput !== '' && formatedInput.match(regex) !== null) {
+    //         if (!formValues.includes(formatedInput)) {
 
-                const newFormValues = [formatedInput, ...formValues];
-                setFormValues(newFormValues);
+    //             const newFormValues = [formatedInput, ...formValues];
+    //             setFormValues(newFormValues);
 
-                props.storeFrequencies(newFormValues);
-            }
-        }
-    }
+    //             props.storeFrequencies(newFormValues);
+    //         }
+    //     }
+    // }
 
     return(
         <div className='Main-Container'>
@@ -60,7 +60,7 @@ function MainConatiner(props) {
                 </div>
                 <div>
                     {/* <ValueContainer value={phValues} />  */}
-                    {phValues.map((value, i) => <ValueContainer value={value} />)}
+                    {phValues.map((value, i) => <ValueContainer value={value} indexValue={i} storeData={props.storeData} />)}
                 </div>
                 {/* <div className='Module-Container'>
                     { formValues.map((value, i) => <Frequency value={value} handleFrequencyRemove={handleFrequencyRemove} key={i} />) }

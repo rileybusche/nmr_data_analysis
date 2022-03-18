@@ -10,43 +10,68 @@ const { ipcRenderer } = window.require('electron');
 function App() {
 
   const [filePath, setFilePath] = useState('');
-  const [frequencies, setFrequencies] = useState([]);
+  const [phCount, setPhCount] = useState('');
+  // const [frequencies, setFrequencies] = useState([]);
+  // const [phList, setPhList] = useState([]);
+
+  var phList = [];
+  var frequencyList = [];
 
   function storePath(path) {
     setFilePath(path);
     // Sends input path to main thread to get file structue to populate pH Values in MainContainer
     ipcRenderer.send(
-      'READ_FILES'
+      'READ_FILES',
+      path
     );
   }
 
-  function storeFrequencies(newFrequencies) {
-    setFrequencies(newFrequencies);
+  // Data passed back from ValueContainer as Obj.
+  function storeData(data) {
+    // Should probably be using state some how.... but this works --- Likely a better way to handle this
+    phList[data.index] = data.pH;
+    frequencyList[data.index] = data.frequency;
+    console.log(phList);
+    console.log(frequencyList);
+    
   }
 
   function sendToPython() {
-
-    const payload = [filePath]
-    payload.push.apply(payload, frequencies)
-    if ( filePath !== '' && frequencies !== '' ) {
-      ipcRenderer.send(
-        'START_BACKGROUND_VIA_MAIN',
-        payload
-      );
+    // const payload = [filePath, frequencyList, phList]
+    const payload = {
+      "SamplesFilePath"  : filePath,
+      "Samples"        : {}
     }
+
+    phList.forEach((ph, index) => {
+      payload['Samples'][ph] = frequencyList[index];
+    });
+
+    console.log(payload);
+
+    // Calls back to main.js to start python process
+    // Send Payload to be written to data.json
+    ipcRenderer.send(
+      'START_BACKGROUND_VIA_MAIN',
+      payload
+    );
   }
 
   function runAnalysis() {
-    console.log(filePath);
-    console.log(frequencies);
+    // Make sure the size of the arrays are 1:1 with number of pH Folders
+    if (phList.length === phCount && frequencyList.length === phCount) {
 
-    sendToPython();
+      console.log(filePath);
+      // console.log(frequencies);
+
+      sendToPython();
+    }
   }
 
   return (
     <div className="App">
       <FileSearch storePath={storePath}/>
-      <MainConatiner storeFrequencies={storeFrequencies}/>
+      <MainConatiner setPhCount={setPhCount} storeData={storeData}/>
       <AnalysisButton runAnalysis={(runAnalysis)}/>
     </div>
   );

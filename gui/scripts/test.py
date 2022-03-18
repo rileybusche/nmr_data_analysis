@@ -1,19 +1,45 @@
-import sys
-import os.path
+# import sys
+# import os.path
+# import json
+# import glob
 
-print("Python Script Start")
+# print("Python Script Start")
 
-args = sys.argv[1].split(',')
+# # print(sys.argv[0])
+# # path = sys.argv[0].split('\\')
 
-path = args[0].split('\\')
-frequencies = args[1:]
+# # path_separator = '/'
 
-path_separator = '/'
+# # # path = path_separator.join(path)
+# # path = sys.argv[1].strip()
+# path = '/Users/rileybusche/Development/nmr_data_analysis/gui/public/data.json'
 
-path = path_separator.join(path)
+# try:
+#     if os.path.exists(path):
+#         data_file = open(path)
+#         data = json.load(data_file)
+#         print('/'.join(data['SamplesFilePath'].split('/')[:-1]))
+#         print(list(data['Samples'].keys()))
+#         data_file.close()
+# except:
+#     print('Python Script Failed with ', sys.exc_info()[0])
+# path = '/Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/ph7.59/'
+# trials = glob.glob(path + "*/")
 
-try:
-    print(path, frequencies)
-    print('Does file exist: ', os.path.exists(path))
-except:
-    print('Python Script Failed with ', sys.exc_info()[0])
+# for trial in trials:
+#     print(trial)
+
+# freq_string = '  1.231   -123.123'
+# freq_string_list = freq_string.split()
+
+# frequencies = [float(freq) for freq in freq_string_list]
+
+# print(frequencies)
+
+list_1 = [
+    '/Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/ph7.59/Trial1/',
+    '/Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/ph7.59/Trial3/',
+    '/Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/ph7.59/Trial2/'
+]
+
+print(sorted(list_1))
