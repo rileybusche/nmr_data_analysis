@@ -7,7 +7,7 @@
     // This will be called from main.js
     ipcRenderer.on('START_SCRIPT', (event, args) => {
 		console.log(args);
-		let pyshell = new PythonShell(path.join(__dirname, '/../scripts/test.py'), {
+		let pyshell = new PythonShell(path.join(__dirname, '/../scripts/main.py'), {
 			pythonPath: 'python3',
 			pythonOptions:['-u'], // Gets print results in real time
 			args: [args.data]

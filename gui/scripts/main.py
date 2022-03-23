@@ -3,9 +3,9 @@
 import functions as fl
 import build_csv as bcsv
 import glob
-import argparse
 import os.path
 import json
+import sys
 
 outputs = {}
 
@@ -20,9 +20,12 @@ try:
         # Gets the path to experiment files from data.json file
         experiment_path = '/'.join(data['SamplesFilePath'].split('/')[:-1]) + '/'
         samples = list(data['Samples'].keys())
+        print(samples)
         data_file.close()
 except:
     print(f'Failed to get Data Files from: {data_path}', sys.exc_info()[0])
+
+print(experiment_path)
 
 diffusion_values = fl.read_diffusion_ramp(experiment_path + 'Difframp')
 
@@ -34,6 +37,7 @@ for ph in samples:
         # /Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/ph7.59/*/ <-
         trials = glob.glob(experiment_path + ph + "/*/")
         trails = sorted(trials)
+        print(trails)
     except:
         print("ERROR : Could not access files. Check path to folder and try again.")
 
@@ -46,6 +50,7 @@ for ph in samples:
 
     # Runs for the number of Trials 
     for trail in trails:
+        print(trail)
 
         # Getting number of files to be read in the folder
         files = glob.glob(trail + "*[0-99].txt")
@@ -56,7 +61,7 @@ for ph in samples:
         for file_number in files:
 
             try:
-                file_object = open(file_name, "r")
+                file_object = open(file_number, "r")
             except:
                 print("Error : Could not access files. Check if folder and naming structure is correct and try agian.")
 

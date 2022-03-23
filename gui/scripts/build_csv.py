@@ -29,6 +29,7 @@ def create_rawdata_csv(file_name, values, trial_number):
                 output_file.writerow([key, peak_dict.get(key)])
             run += 1
             output_file.writerow([''])
+    print(f'Writing raw data to {file_name}')
 
 # Creates CSV with table of data, %G and ln(freq)
 def create_table_csv(file_name, values, trial_number, diffusion_values):
@@ -62,8 +63,18 @@ def create_table_csv(file_name, values, trial_number, diffusion_values):
         for item in list_dicts_in_table:
             writer.writerow(item)
 
-# Takes in values, adds ln() key and associated value to the dictionary
+# Takes in values, adds ln(freq.'s) key and associated value to the dictionary
+# '/Users/rileybusche/Downloads/LV_Arginine_Riley/ph7.59/Trial1/9.txt': {   0.7784: 4154504.59375,
+#                                                                             1.1742: 8724060.625,
+#                                                                             3.1393: 1536317.875,
+#                                                                             'G': 0.75,
+#                                                                             'ln(0.7784)': 15.23970374781529,
+#                                                                             'ln(1.1742)': 15.981595355500051,
+#                                                                             'ln(3.1393)': 14.244899121148375},
 def build_table_dictionary(d, diffusion_values):
+    print("Diffusion Values and d")
+    print(d)
+    print(diffusion_values)
     key_list = []
     value_list = []
 
@@ -85,35 +96,30 @@ def build_table_dictionary(d, diffusion_values):
 
 # Builds a list of the keys in dictionary to use in csv writer
 def build_field_names(table_dict):
-    field_names = []
-    copy_dict = table_dict.copy()
-    try:
-        dict_entry_for_names = copy_dict.pop(1)
-    except:
-        print("ERROR : No data exists in dicitonary entry") 
-
-    # Pulls key from dictionary and appends key to field_names
-    for key in dict_entry_for_names:
-        field_names.append(key)
+    #  table_dict: string: {},...
+    # print("Table: ", table_dict)
+    # Get first value of dictionary
+    first_dict = next(iter(table_dict.items()))[1]
+    field_names = list(first_dict.keys())
 
     return field_names
 
-# Reads in the values from Difframp into diffusion_values[]
-def read_diffusion_ramp(path):
-    path += "/Difframp"
-    try:
-        file_object = open(path, "r")
-    except:
-        print("ERROR : Could not access 'Difframp' file. Check that it is in the proper folder and try again.")
+# Reads in the values from Difframp into diffusion_values[] --- Duplicate from Fuctions... probably okay to delete.
+# def read_diffusion_ramp(path):
+#     path += "/Difframp"
+#     try:
+#         file_object = open(path, "r")
+#     except:
+#         print("ERROR : Could not access 'Difframp' file. Check that it is in the proper folder and try again.")
 
-    diffusion_values = []
-    for line in file_object:
-            if line.find("#") == -1:
-                # Converting values from Scientific to Standard for proper input into CSV
-                pos = line.find("e")
-                number = float(line[0 : pos])
-                power = int(line[pos + 1 : len(line)])
+#     diffusion_values = []
+#     for line in file_object:
+#             if line.find("#") == -1:
+#                 # Converting values from Scientific to Standard for proper input into CSV
+#                 pos = line.find("e")
+#                 number = float(line[0 : pos])
+#                 power = int(line[pos + 1 : len(line)])
 
-                diffusion_values.append(number * pow(10, power))
+#                 diffusion_values.append(number * pow(10, power))
 
-    return diffusion_values
+#     return diffusion_values
