@@ -1,8 +1,10 @@
 .App {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   background: linear-gradient(to right, #91B2C7, #E8E8E8);
+  align-items: center;
+  justify-content: center;
 }
 
 .File-Search-Container {

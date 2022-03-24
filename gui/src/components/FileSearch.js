@@ -4,7 +4,7 @@ import '../style/FileSearch.css';
 
 function FileSearch(props) {
 
-    const [filePath, setFilePath] = useState('Folder Location...');
+    const [filePath, setFilePath] = useState('Path to Difframp file...');
 
     function handleChange(e) {
         setFilePath(e.target.files[0].path);

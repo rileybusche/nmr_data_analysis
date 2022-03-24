@@ -2,10 +2,12 @@
 # Program to sort through NMR text files and pull out the Intensities associated with given Frequencys
 import functions as fl
 import build_csv as bcsv
+import logging
 import glob
 import os.path
 import json
 import sys
+import math
 
 outputs = {}
 
@@ -48,20 +50,23 @@ for ph in samples:
     frequencies_string = data['Samples'][ph].split()
     frequencies = [float(freq) for freq in frequencies_string]
 
+    json_logging_obj = {}
+
     # Runs for the number of Trials 
     for trail in trails:
         print(trail)
 
+        json_logging_obj[f'Trail{trial_number}'] = {}
         # Getting number of files to be read in the folder
         files = glob.glob(trail + "*[0-99].txt")
         files = sorted(files)
         # print(trial_path)
 
         # looping through all files in the trial
-        for file_number in files:
-
+        run_number = 1
+        for run_number_file in files:
             try:
-                file_object = open(file_number, "r")
+                file_object = open(run_number_file, "r")
             except:
                 print("Error : Could not access files. Check if folder and naming structure is correct and try agian.")
 
@@ -89,12 +94,26 @@ for ph in samples:
 
             # Builds Dict {frequency : Intensity}
             frequency_intensity_dict = fl.findIntensities(intensity_list, indices, frequencies)
+            # Adding in ln(frequency)
+            for frequency in list(frequency_intensity_dict.keys()):
+                frequency_intensity_dict[f'ln({frequency})'] = math.log(frequency_intensity_dict[frequency], math.e)
+            # Run numbers start at 1-18
+            frequency_intensity_dict['G'] = diffusion_values[run_number-1]
+
+            json_logging_obj[f'Trail{trial_number}'][run_number] = frequency_intensity_dict
             # print(frequency_intensity_dict)
-            outputs[file_number] = frequency_intensity_dict
+
+            logging_path = f'{experiment_path}logging/'
+            # If logging dir does not exist, create it
+            if not os.path.exists(logging_path):
+                os.makedirs(logging_path) 
+            logging.write_to_file(file_path=f'{logging_path}{ph}.json', data_object=json_logging_obj)
+            # outputs[file_number] = frequency_intensity_dict
+            run_number += 1
 
         # Write output data to CSV
-        bcsv.create_rawdata_csv(file_name_output, outputs, trial_number)
-        bcsv.create_table_csv(file_name_output, outputs, trial_number, diffusion_values)
+        # bcsv.create_rawdata_csv(file_name_output, outputs, trial_number)
+        # bcsv.create_table_csv(file_name_output, outputs, trial_number, diffusion_values)
         trial_number += 1
 
 

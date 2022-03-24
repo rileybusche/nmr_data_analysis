@@ -47,7 +47,7 @@ function writeDataToFile(data) {
   console.log('Writing Data to: ', path);
   console.log(data)
 
-  fs.writeFileSync(path, JSON.stringify(data));
+  fs.writeFileSync(path, JSON.stringify(data, null, 4));
   cache.jsonPath = path;
   console.log('Path sent to python script: ', cache.jsonPath);
 }
