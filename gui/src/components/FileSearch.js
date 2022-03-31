@@ -17,7 +17,7 @@ function FileSearch(props) {
             {/* <input className='Search-Bar' type="file" id="file-upload" name="name" /> */}
             <h4 className='Search-Bar'>{filePath}</h4>
             <div className='File-Search-Button-Container'>
-                <label for='files' className='Search-Button'>Select Folder</label>
+                <label for='files' className='Search-Button'>Select File</label>
                 <input id='files' type='file' className='File-Search-Button' onChange={handleChange}/>
             </div>
         

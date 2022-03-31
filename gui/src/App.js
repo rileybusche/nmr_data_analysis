@@ -11,8 +11,6 @@ function App() {
 
   const [filePath, setFilePath] = useState('');
   const [phCount, setPhCount] = useState('');
-  // const [frequencies, setFrequencies] = useState([]);
-  // const [phList, setPhList] = useState([]);
 
   var phList = [];
   var frequencyList = [];
@@ -31,30 +29,51 @@ function App() {
     // Should probably be using state some how.... but this works --- Likely a better way to handle this
     phList[data.index] = data.pH;
     frequencyList[data.index] = data.frequency;
-    console.log(phList);
-    console.log(frequencyList);
-    
+    // console.log(phList);
+    // console.log(frequencyList);
+    console.log(data);
   }
 
   function sendToPython() {
-    // const payload = [filePath, frequencyList, phList]
-    const payload = {
-      "SamplesFilePath"  : filePath,
-      "Samples"        : {}
+    const re = /^-?[0-9]?[.]?[0-9]+$/g;
+    let isValid = true;
+    // Checking if every freq. is valid in frequencyList
+    for (let i = 0; i < frequencyList.length; i++){
+      const frequencies = frequencyList[i].split(' ');
+      frequencies.every(frequency => {
+        // frequency.search(re) evaluates as 0 if re matches
+        if (frequency.search(re)){
+          isValid = false;
+          return false;
+        }
+        return true;
+      });
+      if (!isValid){
+        break;
+      }
     }
 
-    phList.forEach((ph, index) => {
-      payload['Samples'][ph] = frequencyList[index];
-    });
+    // Only Run Python script if all inputs are valid
+    if (isValid){
+      // const payload = [filePath, frequencyList, phList]
+      const payload = {
+        "SamplesFilePath"  : filePath,
+        "Samples"          : {}
+      }
+          
+      phList.forEach((ph, index) => {
+        payload['Samples'][ph] = frequencyList[index];
+      });
 
-    console.log(payload);
+      console.log(payload);
 
-    // Calls back to main.js to start python process
-    // Send Payload to be written to data.json
-    ipcRenderer.send(
-      'START_BACKGROUND_VIA_MAIN',
-      payload
-    );
+      // Calls back to main.js to start python process
+      // Send Payload to be written to data.json
+      ipcRenderer.send(
+        'START_BACKGROUND_VIA_MAIN',
+        payload
+      );
+    }
   }
 
   function runAnalysis() {

@@ -3,6 +3,7 @@
 import functions as fl
 import build_csv as bcsv
 import logging
+import generate_report as report
 import glob
 import os.path
 import json
@@ -15,6 +16,8 @@ data_path = sys.argv[1].strip()
 samples = []
 data = {}
 experiment_path = ''
+logging_path = ''
+
 try:
     if os.path.exists(data_path):
         data_file = open(data_path)
@@ -56,7 +59,7 @@ for ph in samples:
     for trail in trails:
         print(trail)
 
-        json_logging_obj[f'Trail{trial_number}'] = {}
+        json_logging_obj[f'Trial{trial_number}'] = {}
         # Getting number of files to be read in the folder
         files = glob.glob(trail + "*[0-99].txt")
         files = sorted(files)
@@ -71,6 +74,7 @@ for ph in samples:
                 print("Error : Could not access files. Check if folder and naming structure is correct and try agian.")
 
             # Parsing for LEFT and RIGHT and SIZE of spectrum
+            # Redo this with Regex...
             for line in file_object:
                 if line.find("LEFT") != -1:
                     tokens = line.split()
@@ -93,14 +97,16 @@ for ph in samples:
             indices = fl.calculateIndexs(left_bound, right_bound, size, frequencies)
 
             # Builds Dict {frequency : Intensity}
-            frequency_intensity_dict = fl.findIntensities(intensity_list, indices, frequencies)
+            frequency_intensity_dict = {'Run' : run_number}
+            frequency_intensity_dict.update(fl.findIntensities(intensity_list, indices, frequencies))
             # Adding in ln(frequency)
             for frequency in list(frequency_intensity_dict.keys()):
-                frequency_intensity_dict[f'ln({frequency})'] = math.log(frequency_intensity_dict[frequency], math.e)
+                if frequency != 'Run':
+                    frequency_intensity_dict[f'ln({frequency})'] = math.log(frequency_intensity_dict[frequency], math.e)
             # Run numbers start at 1-18
             frequency_intensity_dict['G'] = diffusion_values[run_number-1]
 
-            json_logging_obj[f'Trail{trial_number}'][run_number] = frequency_intensity_dict
+            json_logging_obj[f'Trial{trial_number}'][run_number] = frequency_intensity_dict
             # print(frequency_intensity_dict)
 
             logging_path = f'{experiment_path}logging/'
@@ -111,10 +117,10 @@ for ph in samples:
             # outputs[file_number] = frequency_intensity_dict
             run_number += 1
 
-        # Write output data to CSV
-        # bcsv.create_rawdata_csv(file_name_output, outputs, trial_number)
-        # bcsv.create_table_csv(file_name_output, outputs, trial_number, diffusion_values)
         trial_number += 1
 
-
+reporting_path = f'{experiment_path}reporting/'
+if not os.path.exists(reporting_path):
+    os.makedirs(reporting_path)
+report.write_report(logging_path=logging_path, reporting_path=reporting_path, samples=samples)
 print("Complete.")
