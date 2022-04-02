@@ -82,13 +82,15 @@ ipcMain.on('START_BACKGROUND_VIA_MAIN', (event, args) => {
 	});
 	hiddenWindow = new BrowserWindow({
 		show: true,
+    title: 'Analyzing...',
 		webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
       contextIsolation: false,
 		},
 	});
-	hiddenWindow.loadURL(backgroundFileUrl);
+	// hiddenWindow.loadURL('http://localhost:3000/python');
+  hiddenWindow.loadURL(backgroundFileUrl);
 
 	hiddenWindow.webContents.openDevTools();
 

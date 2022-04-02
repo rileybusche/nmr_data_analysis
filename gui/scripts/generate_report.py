@@ -9,7 +9,7 @@ def write_report(logging_path:str, reporting_path:str, samples:list):
 
     for data_file, ph in zip(files, samples):
         # JSON file to read data from
-        print(data_file)
+        # print(data_file)
         with open(data_file, 'r') as json_file:
             
             data = json.load(json_file)
