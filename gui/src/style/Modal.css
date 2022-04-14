@@ -1,0 +1,76 @@
+.modal {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    /* background: rgba(255, 255, 255, 0.632); */
+    background: linear-gradient(
+        to bottom right,
+        rgba(232, 232, 232, 0.9),
+        rgba(145, 178, 199, 0.8)
+    );
+    /* z-index: 10;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.25);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+    align-items: center;
+    justify-content: center;
+    
+}
+
+h1 {
+    color: #313638;
+}
+
+.reportLocation {
+    color: #313638;
+    font-size: 12px;
+    padding-bottom: 1rem;
+}
+
+.closeButton {
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.9),
+        rgba(255, 255, 255, 0.1)
+    );
+    width: 50%;
+    height: 15%;
+    border-radius: 2rem;
+    transition: all 0.25s ease;
+    border-width: 0.5px;
+    font-size: 1rem;
+    color: #313638;
+}
+
+.closeButton:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.20);
+}
+
+.closeButtonOld {
+    cursor: pointer;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: 18px;
+    color: #2c3e50;
+    background: white;
+    transition: all 0.25s ease;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.06);
+    position: absolute;
+    right: 0;
+    top: 0;
+    align-self: flex-end;
+    margin-top: -7px;
+    margin-right: -7px;
+}
+
+.closeButtonOld:hover {
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+    transform: translate(-4px, 4px);
+}

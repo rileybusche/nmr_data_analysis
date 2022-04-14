@@ -1,42 +1,30 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
-const url = require('url');
-
 const fs = require('fs');
-
 require('@electron/remote/main').initialize();
 
 // temporary variable to store data while background
 // process is ready to start processing
 let cache = {
-	jsonPath: undefined
+	jsonPath: undefined,
+  samplePath: undefined,
+  scriptPath: path.join(__dirname, '..', 'scripts', 'main.py'),
 };
 
 function createWindow() {
   console.log('Application has started');
-
   // Create the browser window.
-  const win = new BrowserWindow({
+  globalThis.win = new BrowserWindow({
     width: 1100,
     height: 800,
+    title: 'NMR Analysis',
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
       contextIsolation: false,
     },
   });
-
-  // and load the index.html of the app.
-  // win.loadFile("index.html");
-  // win.loadURL(
-  //   isDev
-  //     ? 'http://localhost:3000'
-  //     : `file://${path.join(__dirname, '../build/index.html')}`
-  // );
-  // // Open the DevTools.
-  // if (isDev) {
-  //   win.webContents.openDevTools({ mode: 'detach' });
-  // }
+  // Serve window
   win.loadURL('http://localhost:3000')
 }
 
@@ -72,35 +60,49 @@ app.on('activate', () => {
   }
 });
 
-// This event listener will listen for request
-// from visible renderer process App.js
+ipcMain.setMaxListeners(0)
+
+// Builds a Render Window to handle Python Script Processing
 ipcMain.on('START_BACKGROUND_VIA_MAIN', (event, args) => {
-	const backgroundFileUrl = url.format({
-		pathname: path.join(__dirname, `../background_tasks/run_script.html`),
-		protocol: 'file:',
-		slashes: true,
-	});
-	hiddenWindow = new BrowserWindow({
-		show: true,
+  globalThis.modalWindow = new BrowserWindow({
+    show: true,
+    parent: win,
+    modal: true,
+    width: 500,
+    height: 300,
+    transparent: true,
     title: 'Analyzing...',
-		webPreferences: {
+    webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
       contextIsolation: false,
-		},
-	});
-	hiddenWindow.loadURL('http://localhost:3000/python');
-  // hiddenWindow.loadURL(backgroundFileUrl);
+    },
+  });
 
-	hiddenWindow.webContents.openDevTools();
+  // Show Modal Window
+  modalWindow.loadURL('http://localhost:3000/python');
+  modalWindow.on('closed', () => {
+		modalWindow = null;
+  });
 
-	hiddenWindow.on('closed', () => {
-		hiddenWindow = null;
-	});
-
-  writeDataToFile(args);
 });
 
+// Listening for modal ready
+// Reply and start script
+ipcMain.on('MODAL_READY', (event, args) => {
+	event.reply('START_SCRIPT', {
+		data: cache
+	});
+});
+
+ipcMain.on('CLOSE_MODAL', (event, args) => {
+  BrowserWindow.getFocusedWindow().close();
+});
+// This event listener will listen for request
+// from visible renderer process App.js
+ipcMain.on('SAVE_DATA', (event, args) => {
+  writeDataToFile(args);
+});
 
 // This event listener will listen for data being sent back
 // from the background renderer process
@@ -110,19 +112,11 @@ ipcMain.on('MESSAGE_FROM_BACKGROUND', (event, args) => {
   console.log(args);
 });
 
-
-// Listening for background ready
-// Calls to run_script.html
-ipcMain.on('BACKGROUND_READY', (event, args) => {
-	event.reply('START_SCRIPT', {
-		data: cache.jsonPath
-	});
-});
-
 // Call from Render (App.js) to read files at dir path
 ipcMain.on('READ_FILES', (event, args) => {
   // const path = '/Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/';
   const filePath = path.dirname(args);
+  cache.samplePath = filePath;
   // console.log('Path: ', args);
   // console.log('Path DirName: ', path.dirname(args));
   var phFolders = [];
@@ -148,8 +142,5 @@ ipcMain.on('READ_FILES', (event, args) => {
     console.log(phFolders);
     // Send Files Back to Renderer Thread in MainContainer.js
     event.reply('PH_VALUES_RETURN', phFolders); 
-    // 'MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 
-    // 11 PH_VALUES_RETURN listeners added to [EventEmitter]. Use emitter.setMaxListeners() to increase limit' 
-    // ... May end up being a problem.
   });
 });

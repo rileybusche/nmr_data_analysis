@@ -70,9 +70,10 @@ function App() {
       // Calls back to main.js to start python process
       // Send Payload to be written to data.json
       ipcRenderer.send(
-        'START_BACKGROUND_VIA_MAIN',
+        'SAVE_DATA',
         payload
       );
+      ipcRenderer.send('START_BACKGROUND_VIA_MAIN');
     }
   }
 
