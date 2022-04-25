@@ -1,4 +1,5 @@
 const {app, BrowserWindow, ipcMain} = require('electron');
+const isDev = require('electron-is-dev');
 const path = require('path');
 const fs = require('fs');
 require('@electron/remote/main').initialize();
@@ -12,8 +13,8 @@ let cache = {
 };
 
 function createWindow() {
-  console.log('Application has started');
   // Create the browser window.
+  console.log('Window has started');
   globalThis.win = new BrowserWindow({
     width: 1100,
     height: 800,
@@ -25,7 +26,11 @@ function createWindow() {
     },
   });
   // Serve window
-  win.loadURL('http://localhost:3000')
+  const URL = isDev
+  ? 'http://localhost:3000/'
+  : `file://${path.join(_dirname, '../build/index.html')}`;
+  win.loadURL(URL);
+  // win.loadURL('http://localhost:3000/');
 }
 
 // Store Data in json file for python script to read from
@@ -78,6 +83,10 @@ ipcMain.on('START_BACKGROUND_VIA_MAIN', (event, args) => {
       contextIsolation: false,
     },
   });
+  const URL = isDev
+    ? 'http://localhost:3000/python'
+    : `file://${path.join(_dirname, '../build/index.html#python')}`;
+  win.loadURL(URL);
 
   // Show Modal Window
   modalWindow.loadURL('http://localhost:3000/python');

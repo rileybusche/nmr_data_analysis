@@ -36,7 +36,7 @@ function App() {
 
   function sendToPython() {
     const re = /^-?[0-9]?[.]?[0-9]+$/g;
-    let isValid = true;
+    var isValid = true;
     // Checking if every freq. is valid in frequencyList
     for (let i = 0; i < frequencyList.length; i++){
       const frequencies = frequencyList[i].split(' ');

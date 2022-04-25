@@ -48,7 +48,7 @@ function Python() {
         <div className="modal">
             <h1>{analyzingState ? 'Analyzing...' : 'Complete'}</h1>
             {analyzingState && <Wave />}
-            {!analyzingState && <h3 className="reportLocation">{samplePath}/reporting/reporting/</h3>}
+            {!analyzingState && <h3 className="reportLocation">{samplePath}/reporting/</h3>}
             {!analyzingState && <button className="closeButton" onClick={handleClick}>Close</button>}
         </div>
     );  
