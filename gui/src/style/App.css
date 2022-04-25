@@ -1,0 +1,85 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(
+    to right, 
+    rgb(145, 178, 199), 
+    rgb(232, 232, 232)
+  );
+  align-items: center;
+  justify-content: center;
+}
+
+.File-Search-Container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  /* background-color: aqua; */
+  border-radius: 1rem;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 1rem 4rem 1rem 4rem;
+}
+
+.Search-Bar {
+  flex-grow: 5;
+  height: 2rem;
+  border-radius: 1rem;
+  border: none;
+  text-indent: 1rem;
+  margin-right: 2rem;
+  background-color: #F4F3F3;
+  box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.2);
+}
+
+.File-Search-Button-Container {
+  display: flex;
+  flex-grow: 1;
+}
+
+.File-Search-Button{
+  /* visibility: hidden; */
+  display: none;
+}
+
+.Search-Button {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  background-color: #F4F3F3;
+  border: none;
+  border-radius: 1rem;
+  height: 2rem;
+  box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.2);
+}
+
+.Search-Button:hover {
+  box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.6);
+}
+
+
+.Analysis-Button-Container {
+  display: flex;
+  margin: 0rem 2rem 2rem 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.Analysis-Button {
+  background: linear-gradient(
+    to left,
+    rgba(244, 243, 243, 0.9),
+    rgba(244, 243, 243, 0.5)
+  );
+  height: 3rem;
+  width: 20rem;
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.2);
+}
+
+.Analysis-Button:hover {
+  box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.6);
+}
