@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import Python from './components/Python';
+import Python from './Python';
 import {BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom';
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {

@@ -28,7 +28,7 @@ function createWindow() {
   // Serve window
   const URL = isDev
   ? 'http://localhost:3000/'
-  : `file://${path.join(_dirname, '../build/index.html')}`;
+  : `file://${path.join(__dirname, '../build/index.html')}`;
   win.loadURL(URL);
   // win.loadURL('http://localhost:3000/');
 }
@@ -85,11 +85,10 @@ ipcMain.on('START_BACKGROUND_VIA_MAIN', (event, args) => {
   });
   const URL = isDev
     ? 'http://localhost:3000/python'
-    : `file://${path.join(_dirname, '../build/index.html#python')}`;
-  win.loadURL(URL);
+    : `file://${path.join(__dirname, '../build/index.html#/python')}`;
 
   // Show Modal Window
-  modalWindow.loadURL('http://localhost:3000/python');
+  modalWindow.loadURL(URL);
   modalWindow.on('closed', () => {
 		modalWindow = null;
   });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import '../style/Modal.css';
-import Wave from "./animations/Wave";
+import './style/Modal.css';
+import Wave from "./components/animations/Wave";
 
 // Top Level component for the modal window that handles the python script
 function Python() {
