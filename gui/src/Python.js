@@ -9,15 +9,17 @@ function Python() {
 
     const [analyzingState, setAnalyzingState] = useState(true);
     const [samplePath, setSamplePath] = useState('');
-
-    console.log("Background Initialized.");
-    console.log(__dirname);
-    console.log(__filename);
     // This will be called from main.js
     useEffect( () => {
         ipcRenderer.on('START_SCRIPT', (event, args) => {
             console.log('Python Shell Created...');
+            console.log("Background Initialized.");
+            console.log(__dirname);
+            console.log(__filename);
             setSamplePath(args.data.samplePath);
+            console.log('Sample Path: ', args.data.samplePath);
+            console.log('JSON Path: ', args.data.jsonPath);
+            console.log('Script Path: ', args.data.scriptPath);
             let pyshell = new PythonShell(args.data.scriptPath, {
                 pythonPath: 'python3',
                 pythonOptions:['-u'], // Gets print results in real time

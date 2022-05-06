@@ -2,6 +2,7 @@ const {app, BrowserWindow, ipcMain} = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
 const fs = require('fs');
+const url = require('url');
 require('@electron/remote/main').initialize();
 
 // temporary variable to store data while background
@@ -9,7 +10,8 @@ require('@electron/remote/main').initialize();
 let cache = {
 	jsonPath: undefined,
   samplePath: undefined,
-  scriptPath: path.join(__dirname, '..', 'scripts', 'main.py'),
+  scriptPath: path.join(__dirname, '..', '..', 'app.asar.unpacked', 'build', 'scripts', 'main.py'),
+  // scriptPath: path.join(__dirname, '..', '..', 'main'),
 };
 
 function createWindow() {
@@ -35,13 +37,16 @@ function createWindow() {
 
 // Store Data in json file for python script to read from
 function writeDataToFile(data) {
-  const path = __dirname + '/data.json';
-  console.log('Writing Data to: ', path);
+  const jsonPath = path.join(__dirname, '..', '..', 'app.asar.unpacked', 'build', 'data.json');
+  console.log('Writing JSON Data to: ', jsonPath);
   console.log(data)
 
-  fs.writeFileSync(path, JSON.stringify(data, null, 4));
-  cache.jsonPath = path;
-  console.log('Path sent to python script: ', cache.jsonPath);
+  fs.writeFileSync(jsonPath, JSON.stringify(data, null, 4));
+  cache.jsonPath = jsonPath;
+  console.log('JSON Data path sent to python script: ', cache.jsonPath);
+
+  var data = JSON.parse(fs.readFileSync(jsonPath));
+  console.log(JSON.stringify(data, null, 4));
 }
 
 // This method will be called when Electron has finished
@@ -83,9 +88,19 @@ ipcMain.on('START_BACKGROUND_VIA_MAIN', (event, args) => {
       contextIsolation: false,
     },
   });
+  // For windows, the '#' needs to be formated with `hash:`
+  const osURL = process.platform === "win32"
+    ? url.format({
+      pathname: path.join(__dirname, '..', 'build', 'index.html'),
+      protocol: 'file:',
+      slashes: true,
+      hash: '/python'
+    })
+    : `file://${path.join(__dirname, '../build/index.html#/python')}`;
+
   const URL = isDev
     ? 'http://localhost:3000/python'
-    : `file://${path.join(__dirname, '../build/index.html#/python')}`;
+    : osURL;
 
   // Show Modal Window
   modalWindow.loadURL(URL);
