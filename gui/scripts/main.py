@@ -1,7 +1,7 @@
 # Riley Busche 2019
 # Program to sort through NMR text files and pull out the Intensities associated with given Frequencys
 import functions as fl
-import logging
+import code_logging
 import generate_report as report
 import glob
 import os.path
@@ -12,6 +12,7 @@ import math
 outputs = {}
 
 data_path = sys.argv[1].strip()
+print('Data Path: ', data_path)
 samples = []
 data = {}
 experiment_path = ''
@@ -21,6 +22,7 @@ try:
     if os.path.exists(data_path):
         data_file = open(data_path)
         data = json.load(data_file)
+        print(data)
         # Gets the path to experiment files from data.json file
         experiment_path = '/'.join(data['SamplesFilePath'].split('/')[:-1]) + '/'
         samples = list(data['Samples'].keys())
@@ -110,7 +112,7 @@ for ph in samples:
             # If logging dir does not exist, create it
             if not os.path.exists(logging_path):
                 os.makedirs(logging_path) 
-            logging.write_to_file(file_path=f'{logging_path}{ph}.json', data_object=json_logging_obj)
+            code_logging.write_to_file(file_path=f'{logging_path}{ph}.json', data_object=json_logging_obj)
             # outputs[file_number] = frequency_intensity_dict
             run_number += 1
 

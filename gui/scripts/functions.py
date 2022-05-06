@@ -43,7 +43,7 @@ def findPeak(intestity_list, index):
     
 # Reads in the values from Difframp into diffusion_values[]
 def read_diffusion_ramp(path):
-    # print(path)
+    print(path)
     try:
         file_object = open(path, "r")
     except:
