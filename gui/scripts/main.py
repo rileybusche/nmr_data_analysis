@@ -9,9 +9,12 @@ import json
 import sys
 import math
 
+print("Python script Starting")
+
 outputs = {}
 
-data_path = sys.argv[1].strip()
+data_path = os.path.join(sys.argv[1].strip())
+# print('data_path: ', data_path)
 samples = []
 data = {}
 experiment_path = ''
@@ -19,17 +22,22 @@ logging_path = ''
 
 try:
     if os.path.exists(data_path):
+        # print('File Exists!')
         data_file = open(data_path)
         data = json.load(data_file)
         # Gets the path to experiment files from data.json file
-        experiment_path = '/'.join(data['SamplesFilePath'].split('/')[:-1]) + '/'
+        # /Users/rileybusche/Downloads/LV_Arginine_Riley
+        experiment_path = os.path.join('/'.join(data['SamplesFilePath'].split('/')[:-1]),)
+        # print('experiment_path: ', experiment_path)
         samples = list(data['Samples'].keys())
-        # print(samples)
+        # print('samples: ', samples)
         data_file.close()
-except:
-    print(f'Failed to get Data Files from: {data_path}', sys.exc_info()[0])
+except Exception as e:
+    print(f'Failed to get Data Files from: {data_path}', sys.exc_info()[0], e)
 
-diffusion_values = fl.read_diffusion_ramp(experiment_path + 'Difframp')
+difframp_file_path = os.path.join(experiment_path, 'Difframp')
+# print('difframp_file_path', difframp_file_path)
+diffusion_values = fl.read_diffusion_ramp(difframp_file_path)
 
 # Loop through PH array
 for ph in samples:
@@ -37,11 +45,11 @@ for ph in samples:
     # Path from user arugument
     try:
         # /Users/rileybusche/Development/nmr_data_analysis/LVR_Diffusion/ph7.59/*/ <-
-        trials = glob.glob(experiment_path + ph + "/*/")
+        trials = glob.glob(os.path.join(experiment_path, ph, '*'))
         trails = sorted(trials)
-        # print(trails)
-    except:
-        print("ERROR : Could not access files. Check path to folder and try again.")
+        # print('trials: ',trails)
+    except Exception as e:
+        print(f"ERROR : Could not access files. Check path to folder and try again: {ph_path}", sys.exc_info()[0], e)
 
     trial_number = 1
 
@@ -58,17 +66,17 @@ for ph in samples:
 
         json_logging_obj[f'Trial{trial_number}'] = {}
         # Getting number of files to be read in the folder
-        files = glob.glob(trail + "*[0-99].txt")
+        files = glob.glob(os.path.join(trail, '*[0-99].txt'))
         files = sorted(files)
-        # print(trial_path)
+        # print('files: ', files)
 
         # looping through all files in the trial
         run_number = 1
         for run_number_file in files:
             try:
                 file_object = open(run_number_file, "r")
-            except:
-                print("Error : Could not access files. Check if folder and naming structure is correct and try agian.")
+            except Exception as e:
+                print("Error : Could not access files. Check if folder and naming structure is correct and try agian.", sys.exc_info()[0], e)
 
             # Parsing for LEFT and RIGHT and SIZE of spectrum
             # Redo this with Regex...
@@ -106,17 +114,17 @@ for ph in samples:
             json_logging_obj[f'Trial{trial_number}'][run_number] = frequency_intensity_dict
             # print(frequency_intensity_dict)
 
-            logging_path = f'{experiment_path}logging/'
+            logging_path = os.path.join(experiment_path, 'logging')
             # If logging dir does not exist, create it
             if not os.path.exists(logging_path):
                 os.makedirs(logging_path) 
-            logging.write_to_file(file_path=f'{logging_path}{ph}.json', data_object=json_logging_obj)
+            logging.write_to_file(file_path=os.path.join(logging_path, f'{ph}.json'), data_object=json_logging_obj)
             # outputs[file_number] = frequency_intensity_dict
             run_number += 1
 
         trial_number += 1
 
-reporting_path = f'{experiment_path}reporting/'
+reporting_path = os.path.join(experiment_path, 'reporting')
 if not os.path.exists(reporting_path):
     os.makedirs(reporting_path)
 report.write_report(logging_path=logging_path, reporting_path=reporting_path, samples=samples)
