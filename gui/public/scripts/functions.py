@@ -43,11 +43,10 @@ def findPeak(intestity_list, index):
     
 # Reads in the values from Difframp into diffusion_values[]
 def read_diffusion_ramp(path):
-    print(path)
     try:
         file_object = open(path, "r")
-    except:
-        print("ERROR : Could not access 'Difframp' file. Check that it is in the proper folder and try again.")
+    except Exception as e:
+        print("ERROR : Could not access 'Difframp' file. Check that it is in the proper folder and try again. ", e)
 
     diffusion_values = []
     for line in file_object:

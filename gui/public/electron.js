@@ -76,6 +76,8 @@ ipcMain.setMaxListeners(0)
 ipcMain.on('START_BACKGROUND_VIA_MAIN', (event, args) => {
   globalThis.modalWindow = new BrowserWindow({
     show: true,
+    autoHideMenuBar: true,
+    frame: false,
     parent: win,
     modal: true,
     width: 500,
