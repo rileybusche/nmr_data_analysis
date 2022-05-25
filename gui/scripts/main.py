@@ -115,6 +115,7 @@ for ph in samples:
             code_logging.write_to_file(file_path=f'{logging_path}{ph}.json', data_object=json_logging_obj)
             # outputs[file_number] = frequency_intensity_dict
             run_number += 1
+            file_object.close()
 
         trial_number += 1
 
