@@ -14,7 +14,6 @@ def calculateIndexs(left_bound, right_bound, size, frequencies):
     for frequency in frequencies:
         indices.append(int((slope * frequency) + y_int))
     
-    
     return indices
 
 # Pulls the intensities out of intensity_list and stores in a dictionary

@@ -1,7 +1,7 @@
 # Riley Busche 2019
 # Program to sort through NMR text files and pull out the Intensities associated with given Frequencys
 import functions as fl
-import logging
+import code_logging
 import generate_report as report
 import glob
 import os.path
