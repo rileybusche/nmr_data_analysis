@@ -1,5 +1,6 @@
 # Riley Busche 2019
 # File containing functions used in main.py
+import os
 
 def calculateIndexs(left_bound, right_bound, size, frequencies):
     indices = []
@@ -61,4 +62,8 @@ def read_diffusion_ramp(path):
     return diffusion_values
 
 
-
+def build_peak_logging_dirs(experiment_path:str, samples:[str]):
+    for sample in samples:
+        trials = os.listdir(os.path.join(experiment_path, sample))
+        for trials in trials:
+            os.makedirs(os.path.join(experiment_path, 'logging', sample, trial))

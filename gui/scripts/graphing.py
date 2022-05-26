@@ -6,26 +6,28 @@ import glob
 import os
 import json 
 
-size = ''
-left = ''
-right = ''
+def build_graph(file_path:str, frequencies:[float], graph_output_path:str, logging_path:str, run_number:int) -> dict[str:float]:
 
-frequencies = [1.1969]
+    size = left = right = ''
 
-debug = False
-graph_debug = False
+    # frequencies = [1.1969]
 
-search_range = 100
-peak_search = True
+    debug = False
+    graph_debug = False
 
-data = {}
+    search_range = 100
+    peak_search = True
 
-# graphs = sorted(glob.glob(os.path.join('/Users/rileybusche/Development/nmr_data_analysis/SULVdiamine/ph8.50/Trial1', '*.txt')))
-for number in range(1,19):
+    # Contains the input freqs. as well as the actual highest value for logging
+    data = {}
+    # Peak data returned to main - has the highest intensity replacing the intensity at the point if peak_search 
+    return_data = {}
+
     y_values = []
-    graph_path = f'/Users/rileybusche/Development/nmr_data_analysis/SULVdiamine/ph8.50/Trial1/{number}.txt'
-    print(graph_path)
-    with open(graph_path) as file_object:
+    
+    # graph_path = f'/Users/rileybusche/Development/nmr_data_analysis/SULVdiamine/ph8.50/Trial1/{number}.txt'
+    print(f'file_path: {file_path}')
+    with open(file_path) as file_object:
         for line in file_object.readlines():
 
             if 'SIZE' in line:
@@ -65,11 +67,13 @@ for number in range(1,19):
     fig.set_size_inches(16, 9)
     ax.plot(x_values, y_values)
     ax.set(xlabel='Frequency (ppm)', ylabel='')
-    ax.set_title(' '.join(graph_path.split(os.sep)[-4:]))
+    ax.set_title(' '.join(file_path.split(os.sep)[-4:]))
 
     for count, index in enumerate(indices):
 
         point = (frequencies[count], y_values[index])
+        
+        return_data[frequencies[count]] = float(y_values[index])
 
         ax.annotate(
             text =          f'Input Point (red):\n({point[0]} ppm, {"%.4E" % Decimal(point[1])})', 
@@ -108,7 +112,11 @@ for number in range(1,19):
             # Build max point (x,y) in subset
             max_point = (x_subset[max_y_index], max_y)
 
-            data[graph_path] = {
+            # Return Data with adjusted peak intensity
+            return_data[frequencies[count]] = float(max_y)
+
+
+            data[file_path] = {
                 f'{frequencies[count]:.4f}'  : "%.4E" % Decimal(y_values[index]),
                 f'{max_point[0]:.4f}'        : "%.4E" % Decimal(max_point[1])
             }
@@ -149,10 +157,12 @@ for number in range(1,19):
 
     ax.invert_xaxis()
 
-    plt.savefig(f'./{"_".join(graph_path.split(os.sep)[-4:])}.jpeg', bbox_inches='tight', dpi=200)
+    plt.savefig(f'./{"_".join(file_path.split(os.sep)[-4:])}.jpeg', bbox_inches='tight', dpi=200)
     if graph_debug:
         plt.show()
 
-if debug:
-    with open('./logged_data.json', 'w') as output_file:
-        json.dump(data, output_file, indent=4)
+    if debug:
+        with open('./logged_data.json', 'w') as output_file:
+            json.dump(data, output_file, indent=4)
+
+    return return_data

@@ -31,6 +31,8 @@ try:
         # print('experiment_path: ', experiment_path)
         samples = list(data['Samples'].keys())
         # print('samples: ', samples)
+        # Builds folders in the logging dir for the input peak and actual peak raw data
+        fl.build_peak_logging_dirs(experiment_path=experiment_path, samples=samples)
         data_file.close()
 except Exception as e:
     print(f'Failed to get Data Files from: {data_path}', sys.exc_info()[0], e)
@@ -73,6 +75,10 @@ for ph in samples:
         # looping through all files in the trial
         run_number = 1
         for run_number_file in files:
+            # Path to output raw data
+            logging_path = os.path.join(experiment_path, 'logging')
+
+            ##################################
             try:
                 file_object = open(run_number_file, "r")
             except Exception as e:
@@ -101,6 +107,9 @@ for ph in samples:
             # Array of indecies for input frequencies
             indices = fl.calculateIndexs(left_bound, right_bound, size, frequencies)
 
+
+            ##############################
+
             # Builds Dict {frequency : Intensity}
             frequency_intensity_dict = {'Run' : run_number}
             frequency_intensity_dict.update(fl.findIntensities(intensity_list, indices, frequencies))
@@ -114,7 +123,6 @@ for ph in samples:
             json_logging_obj[f'Trial{trial_number}'][run_number] = frequency_intensity_dict
             # print(frequency_intensity_dict)
 
-            logging_path = os.path.join(experiment_path, 'logging')
             # If logging dir does not exist, create it
             if not os.path.exists(logging_path):
                 os.makedirs(logging_path) 
