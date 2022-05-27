@@ -3,9 +3,11 @@
 import csv
 import json
 import glob
+import os.path
 
 def write_report(logging_path:str, reporting_path:str, samples:list):
-    files = glob.glob(f'{logging_path}*.json')
+    files = glob.glob(os.path.join(logging_path, '*.json'))
+    print('reporting files: ', files)
 
     for data_file, ph in zip(files, samples):
         # JSON file to read data from
@@ -15,7 +17,8 @@ def write_report(logging_path:str, reporting_path:str, samples:list):
             data = json.load(json_file)
 
             # CSV to write data to
-            with open(f'{reporting_path}{ph}.csv', 'w') as csv_file:
+            print(os.path.join(reporting_path, ph, '.csv'))
+            with open(os.path.join(reporting_path, f'{ph}.csv'), 'w') as csv_file:
 
                 #  Loop trough 'Trials'
                 for run in list(data.keys()):
