@@ -26,6 +26,7 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
     y_values = []
     
     # graph_path = f'/Users/rileybusche/Development/nmr_data_analysis/SULVdiamine/ph8.50/Trial1/{number}.txt'
+    # /Users/rileybusche/Development/nmr_data_analysis/SULVdiamine/ph8.50/Trial1/17.txt
     print(f'file_path: {file_path}')
     with open(file_path) as file_object:
         for line in file_object.readlines():
@@ -67,7 +68,7 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
     fig.set_size_inches(16, 9)
     ax.plot(x_values, y_values)
     ax.set(xlabel='Frequency (ppm)', ylabel='')
-    ax.set_title(' '.join(file_path.split(os.sep)[-4:]))
+    ax.set_title(' '.join(file_path.split(os.sep)[-4:-3]) + str(run_number) )
 
     for count, index in enumerate(indices):
 
@@ -157,12 +158,14 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
 
     ax.invert_xaxis()
 
-    plt.savefig(f'./{"_".join(file_path.split(os.sep)[-4:])}.jpeg', bbox_inches='tight', dpi=200)
+    graph_output_path = os.path.join(graph_output_path, os.sep.join(file_path.split(os.sep)[-3:-1]), f'{run_number}.jpeg')
+    plt.savefig(graph_output_path, bbox_inches='tight', dpi=200)
     if graph_debug:
         plt.show()
 
-    if debug:
-        with open('./logged_data.json', 'w') as output_file:
-            json.dump(data, output_file, indent=4)
+
+    logging_path = os.path.join(logging_path, os.sep.join(file_path.split(os.sep)[-3:-1]), f'{run_number}.json')
+    with open(logging_path, 'w') as output_file:
+        json.dump(data, output_file, indent=4)
 
     return return_data

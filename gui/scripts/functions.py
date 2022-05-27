@@ -67,3 +67,5 @@ def build_peak_logging_dirs(experiment_path:str, samples:[str]):
         trials = os.listdir(os.path.join(experiment_path, sample))
         for trials in trials:
             os.makedirs(os.path.join(experiment_path, 'logging', sample, trial))
+            os.makedirs(os.path.join(experiment_path, 'graphing', sample, trial))
+            
