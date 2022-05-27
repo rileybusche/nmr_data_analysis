@@ -8,6 +8,7 @@ import os.path
 import json
 import sys
 import math
+import graphing
 
 print("Python script Starting")
 
@@ -77,42 +78,21 @@ for ph in samples:
         for run_number_file in files:
             # Path to output raw data
             logging_path = os.path.join(experiment_path, 'logging')
+            graphing_path = os.path.join(experiment_path, 'graphing')
 
             ##################################
-            try:
-                file_object = open(run_number_file, "r")
-            except Exception as e:
-                print("Error : Could not access files. Check if folder and naming structure is correct and try agian.", sys.exc_info()[0], e)
-
-            # Parsing for LEFT and RIGHT and SIZE of spectrum
-            # Redo this with Regex...
-            for line in file_object:
-                if line.find("LEFT") != -1:
-                    tokens = line.split()
-                    left_bound = float(tokens[3])
-                    right_bound = float(tokens[7])
-                elif line.find("SIZE") != -1:
-                    tokens = line.split()
-                    size = int(tokens[3])-1
-                    break
-
-            # Build list of INTENSITIES
-            intensity_list = []
-
-            for line in file_object:
-                if line.find("#") == -1:
-                    # Build List
-                    intensity_list.append(float(line))
-
-            # Array of indecies for input frequencies
-            indices = fl.calculateIndexs(left_bound, right_bound, size, frequencies)
-
-
-            ##############################
+            peak_data = graphing.build_graph(
+                file_path=run_number_file, 
+                frequencies=frequencies, 
+                graph_output_path=graphing_path, 
+                logging_path=logging_path, 
+                run_number=run_number
+            )
+            ##################################
 
             # Builds Dict {frequency : Intensity}
             frequency_intensity_dict = {'Run' : run_number}
-            frequency_intensity_dict.update(fl.findIntensities(intensity_list, indices, frequencies))
+            frequency_intensity_dict.update(peak_data)
             # Adding in ln(frequency)
             for frequency in list(frequency_intensity_dict.keys()):
                 if frequency != 'Run':

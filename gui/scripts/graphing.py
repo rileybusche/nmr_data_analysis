@@ -10,8 +10,6 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
 
     size = left = right = ''
 
-    # frequencies = [1.1969]
-
     debug = False
     graph_debug = False
 
@@ -53,9 +51,9 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
     # for (x,y) in zip(x_values, y_values):
     #     data_points[x] = y
     indices = functions.calculateIndexs(left_bound=left, right_bound=right, size=size, frequencies=frequencies)
-    print(f'Index Input Point: {indices}')
-
+    
     if debug:
+        print(f'Index Input Point: {indices}')
         print(f'Interval: {interval}')
         print(f'Left: {left}')
         print(f'Right: {right}')
@@ -158,12 +156,15 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
 
     ax.invert_xaxis()
 
+    # ~/graphing/{ph}/Trial1/...
     graph_output_path = os.path.join(graph_output_path, os.sep.join(file_path.split(os.sep)[-3:-1]), f'{run_number}.jpeg')
     plt.savefig(graph_output_path, bbox_inches='tight', dpi=200)
+
+    # Show Graphs if debug is on
     if graph_debug:
         plt.show()
 
-
+    # Log input peak and actual peak to file
     logging_path = os.path.join(logging_path, os.sep.join(file_path.split(os.sep)[-3:-1]), f'{run_number}.json')
     with open(logging_path, 'w') as output_file:
         json.dump(data, output_file, indent=4)
