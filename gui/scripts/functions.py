@@ -2,7 +2,7 @@
 # File containing functions used in main.py
 import os
 
-def calculateIndexs(left_bound:float, right_bound:float, size:int, frequencies:[float]) -> [int]:
+def calculateIndexs(left_bound:float, right_bound:float, size:int, frequencies:[]) -> []:
     indices = []
     # Calculating y = m x + b equation for finding index of intestity from given frequency
     
@@ -18,7 +18,7 @@ def calculateIndexs(left_bound:float, right_bound:float, size:int, frequencies:[
     return indices
     
 # Reads in the values from Difframp into diffusion_values[]
-def read_diffusion_ramp(path:str) -> [float]:
+def read_diffusion_ramp(path:str) -> []:
     # print(path)
     try:
         file_object = open(path, "r")
@@ -40,10 +40,17 @@ def read_diffusion_ramp(path:str) -> [float]:
     return diffusion_values
 
 
-def build_peak_logging_dirs(experiment_path:str, samples:[str]):
+def build_peak_logging_dirs(experiment_path:str, samples:[]):
     for sample in samples:
         trials = os.listdir(os.path.join(experiment_path, sample))
-        for trials in trials:
-            os.makedirs(os.path.join(experiment_path, 'logging', sample, trial))
-            os.makedirs(os.path.join(experiment_path, 'graphing', sample, trial))
+        for trial in trials:
+            # logging = os.path.join(experiment_path, 'logging', sample, trial)
+            logging_raw = os.path.join(experiment_path, 'logging', 'raw', sample, trial)
+            graphing = os.path.join(experiment_path, 'graphing', sample, trial)
+            # if not os.path.exists(logging):
+            #     os.makedirs(logging)
+            if not os.path.exists(logging_raw):
+                os.makedirs(logging_raw)
+            if not os.path.exists(graphing):
+                os.makedirs(graphing)
             

@@ -6,9 +6,11 @@ import glob
 import os
 import json 
 
-def build_graph(file_path:str, frequencies:[float], graph_output_path:str, logging_path:str, run_number:int) -> dict[str:float]:
+def build_graph(file_path:str, frequencies:[], graph_output_path:str, logging_path:str, run_number:str, sample:str, trial_number:str) -> dict:
 
-    size = left = right = ''
+    size = ''
+    left = ''
+    right = ''
 
     debug = False
     graph_debug = False
@@ -66,13 +68,14 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
     fig.set_size_inches(16, 9)
     ax.plot(x_values, y_values)
     ax.set(xlabel='Frequency (ppm)', ylabel='')
-    ax.set_title(' '.join(file_path.split(os.sep)[-4:-3]) + str(run_number) )
+    ax.set_title(f'{file_path.split(os.sep)[-4]} ' + sample + f' Trial{trial_number} ' + run_number )
 
     for count, index in enumerate(indices):
 
         point = (frequencies[count], y_values[index])
         
-        return_data[frequencies[count]] = float(y_values[index])
+        # If peak is inverted, value will be negative - need to take abs value for later calculation (math.e)
+        return_data[frequencies[count]] = abs(float(y_values[index]))
 
         ax.annotate(
             text =          f'Input Point (red):\n({point[0]} ppm, {"%.4E" % Decimal(point[1])})', 
@@ -112,7 +115,7 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
             max_point = (x_subset[max_y_index], max_y)
 
             # Return Data with adjusted peak intensity
-            return_data[frequencies[count]] = float(max_y)
+            return_data[frequencies[count]] = abs(float(max_y))
 
 
             data[file_path] = {
@@ -157,7 +160,7 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
     ax.invert_xaxis()
 
     # ~/graphing/{ph}/Trial1/...
-    graph_output_path = os.path.join(graph_output_path, os.sep.join(file_path.split(os.sep)[-3:-1]), f'{run_number}.jpeg')
+    graph_output_path = os.path.join(graph_output_path, sample, f'Trial{trial_number}', f'{run_number}.jpeg')
     plt.savefig(graph_output_path, bbox_inches='tight', dpi=200)
 
     # Show Graphs if debug is on
@@ -165,8 +168,9 @@ def build_graph(file_path:str, frequencies:[float], graph_output_path:str, loggi
         plt.show()
 
     # Log input peak and actual peak to file
-    logging_path = os.path.join(logging_path, os.sep.join(file_path.split(os.sep)[-3:-1]), f'{run_number}.json')
+    logging_path = os.path.join(logging_path, 'raw', sample, f'Trial{trial_number}', f'{run_number}.json')
     with open(logging_path, 'w') as output_file:
         json.dump(data, output_file, indent=4)
 
+    print(f'return_data: {return_data}')
     return return_data
