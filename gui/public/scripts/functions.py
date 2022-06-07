@@ -1,7 +1,8 @@
 # Riley Busche 2019
 # File containing functions used in main.py
+import os
 
-def calculateIndexs(left_bound, right_bound, size, frequencies):
+def calculateIndexs(left_bound:float, right_bound:float, size:int, frequencies:[]) -> []:
     indices = []
     # Calculating y = m x + b equation for finding index of intestity from given frequency
     
@@ -14,39 +15,15 @@ def calculateIndexs(left_bound, right_bound, size, frequencies):
     for frequency in frequencies:
         indices.append(int((slope * frequency) + y_int))
     
-    
     return indices
-
-# Pulls the intensities out of intensity_list and stores in a dictionary
-def findIntensities(intensity_list, indices, frequencies):
-    frequency_intensity_dict = {}
-    for index, frequency in zip(indices, frequencies):
-        frequency_intensity_dict[frequency] = findPeak(intensity_list, index)
-
-    return frequency_intensity_dict
-
-# Looks for peak closest to given intensity and return that intensity - "Search Algorithm"
-def findPeak(intestity_list, index):
-    peak_intensity = 0.00
-    # Check frequecny at intensity_list[index] vs intensity_list[index--] and intensity_list[index++], take higher value
-    search = True
-    while(search):
-        if abs(intestity_list[index]) <= abs(intestity_list[index + 1]):
-            index += 1
-        elif abs(intestity_list[index]) <= abs(intestity_list[index - 1]):
-            index -= 1
-        else:
-            peak_intensity = intestity_list[index]
-            search = False
-
-    return abs(peak_intensity)
     
 # Reads in the values from Difframp into diffusion_values[]
-def read_diffusion_ramp(path):
+def read_diffusion_ramp(path:str) -> []:
+    # print(path)
     try:
         file_object = open(path, "r")
-    except Exception as e:
-        print("ERROR : Could not access 'Difframp' file. Check that it is in the proper folder and try again. ", e)
+    except:
+        print("ERROR : Could not access 'Difframp' file. Check that it is in the proper folder and try again.")
 
     diffusion_values = []
     for line in file_object:
@@ -58,7 +35,22 @@ def read_diffusion_ramp(path):
 
                 diffusion_values.append(number * pow(10, power))
 
+    file_object.close()
+    
     return diffusion_values
 
 
-
+def build_peak_logging_dirs(experiment_path:str, samples:[]):
+    for sample in samples:
+        trials = os.listdir(os.path.join(experiment_path, sample))
+        for trial in trials:
+            # logging = os.path.join(experiment_path, 'logging', sample, trial)
+            logging_raw = os.path.join(experiment_path, 'logging', 'raw', sample, trial)
+            graphing = os.path.join(experiment_path, 'graphing', sample, trial)
+            # if not os.path.exists(logging):
+            #     os.makedirs(logging)
+            if not os.path.exists(logging_raw):
+                os.makedirs(logging_raw)
+            if not os.path.exists(graphing):
+                os.makedirs(graphing)
+            

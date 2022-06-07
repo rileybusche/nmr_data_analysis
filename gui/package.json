@@ -13,7 +13,15 @@
     "directories": {
       "buildResources": "assets"
     },
-    "extraResources": [],
+    "extraResources": [
+      {
+        "from": "python",
+        "to": "python",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
     "asar": true,
     "asarUnpack": [
       "build/scripts/*.py"

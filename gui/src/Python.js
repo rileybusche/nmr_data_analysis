@@ -9,6 +9,7 @@ function Python() {
 
     const [analyzingState, setAnalyzingState] = useState(true);
     const [samplePath, setSamplePath] = useState('');
+
     // This will be called from main.js
     useEffect( () => {
         ipcRenderer.on('START_SCRIPT', (event, args) => {
@@ -20,8 +21,9 @@ function Python() {
             console.log('Sample Path: ', args.data.samplePath);
             console.log('JSON Path: ', args.data.jsonPath);
             console.log('Script Path: ', args.data.scriptPath);
+            console.log('Python Path: ', args.data.bundledPythonPath);
             let pyshell = new PythonShell(args.data.scriptPath, {
-                pythonPath: 'python3',
+                pythonPath: args.data.bundledPythonPath,
                 pythonOptions:['-u'], // Gets print results in real time
                 args: [args.data.jsonPath]
             });

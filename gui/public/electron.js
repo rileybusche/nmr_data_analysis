@@ -5,12 +5,28 @@ const fs = require('fs');
 const url = require('url');
 require('@electron/remote/main').initialize();
 
+// This is to differentiate if it is in DEV or Prod if there is a need to loop through all
+// const possibilities = [
+//     path.join(process.resourcePath, "python", "bin", "python3.9"),
+//     // In development
+//     // path.join(__dirname, "python", "bin", "python3.9"),
+// ]
+// for (const path of possibilities) {
+//     if (fs.existsSync(path)) {
+//       return path;
+//     }
+// }
+bundledPython = path.join(process.resourcesPath, "python", "bin", "python3.9");
+
+bundledPath = fs.existsSync(bundledPython) ? bundledPython : "python3";
+
 // temporary variable to store data while background
 // process is ready to start processing
 let cache = {
 	jsonPath: undefined,
   samplePath: undefined,
   scriptPath: path.join(__dirname, '..', '..', 'app.asar.unpacked', 'build', 'scripts', 'main.py'),
+  bundledPythonPath: bundledPath
   // scriptPath: path.join(__dirname, '..', '..', 'main'),
 };
 
@@ -145,8 +161,9 @@ ipcMain.on('READ_FILES', (event, args) => {
   // console.log('Path: ', args);
   // console.log('Path DirName: ', path.dirname(args));
   var phFolders = [];
+
   // Matching PH folders
-  const re = new RegExp('ph[0-9]');
+  const re = /ph[0-9]/gi;
   fs.readdir(filePath, (err, files) => {
     files.forEach(file => {
       // Pune any files/folders that are not ph*

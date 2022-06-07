@@ -7,7 +7,7 @@ import os.path
 
 def write_report(logging_path:str, reporting_path:str, samples:list):
     files = glob.glob(os.path.join(logging_path, '*.json'))
-    # print('reporting files: ', files)
+    print('reporting files: ', files)
 
     for data_file, ph in zip(files, samples):
         # JSON file to read data from
@@ -17,7 +17,7 @@ def write_report(logging_path:str, reporting_path:str, samples:list):
             data = json.load(json_file)
 
             # CSV to write data to
-            # print(os.path.join(reporting_path, ph, '.csv'))
+            print(os.path.join(reporting_path, f'{ph}.csv'))
             with open(os.path.join(reporting_path, f'{ph}.csv'), 'w') as csv_file:
 
                 #  Loop trough 'Trials'
@@ -40,3 +40,4 @@ def write_report(logging_path:str, reporting_path:str, samples:list):
                         # print(data[run][sample].keys())
                         # pp.pprint(data[run][sample])
                         output_file.writerow(data[run][sample])
+                    
